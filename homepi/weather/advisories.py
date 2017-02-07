@@ -1,5 +1,6 @@
 import pyowm
 import requests
+import json
 #AppID eTNLa2UVUaDHQZMFw8hP
 #App Code F9gx8fA34F1sS5V1i3q1dQ
 #client_id=SuAEvRZ31hmCxUhGx5o94
@@ -16,7 +17,7 @@ w = observation.get_weather()
 
 
 r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=Boston&APPID=75288d4cb078b45034abd9b522bd4192')
-print(r.json())
+#print(r.json())
 
 # print('_____________________________________________________________________________________________')
 
@@ -32,8 +33,16 @@ print(r.json())
 
 
 #prints out all current winter storm watch advisories
-f = requests.get('https://api.aerisapi.com/advisories/search?query=type:WS.A&client_id=SuAEvRZ31hmCxUhGx5o94&client_secret=NHSPTJqz4EdfgwdwbcDvWSN5Pa5kP3Nrvp96b887')
-print(f.text)
+target = open('advisories.log','a')
+f = requests.get('https://api.aerisapi.com/advisories/closest?p=02134&limit=5&radius=50mi&client_id=SuAEvRZ31hmCxUhGx5o94&client_secret=NHSPTJqz4EdfgwdwbcDvWSN5Pa5kP3Nrvp96b887')
+jsonResponse=f.json()
+#target.write('\n')
+target.write(jsonResponse["response"][0]["details"]["type"])
+target.write(', ')
+target.write(jsonResponse["response"][0]["details"]["name"])
+target.write('\n')
+target.close()
+
 
 
 
