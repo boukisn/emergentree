@@ -33,7 +33,7 @@ r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=Boston&APPID=
 
 
 #prints out all current winter storm watch advisories
-target = open('advisories.log','a')
+target = open('advisories.log','w')
 f = requests.get('https://api.aerisapi.com/advisories/closest?p=02134&limit=5&radius=50mi&client_id=SuAEvRZ31hmCxUhGx5o94&client_secret=NHSPTJqz4EdfgwdwbcDvWSN5Pa5kP3Nrvp96b887')
 jsonResponse=f.json()
 #target.write('\n')
