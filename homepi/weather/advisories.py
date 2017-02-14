@@ -38,7 +38,7 @@ f = requests.get('https://api.aerisapi.com/advisories/closest?p=02134&limit=5&ra
 jsonResponse=f.json()
 #target.write('\n')
 target.write(jsonResponse["response"][0]["details"]["type"])
-target.write(', ')
+target.write(',')
 target.write(jsonResponse["response"][0]["details"]["name"])
 #target.write('\n')
 target.close()
