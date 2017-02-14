@@ -42,5 +42,12 @@ target.write(str(jsonResponse["weather"][0]["id"]))
 target.write(',')
 target.write(str(jsonResponse["wind"]["speed"]))
 target.write(',')
-target.write(str(jsonResponse["wind"]["deg"]))
+
+def degToCompass(num):
+    val=int((num/22.5)+.5)
+    arr=["N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"]
+    return arr[(val % 16)]
+deg=int(jsonResponse["wind"]["deg"])
+direction=degToCompass(deg)
+target.write(direction)
 target.close()
