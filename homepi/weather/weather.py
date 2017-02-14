@@ -30,11 +30,11 @@ jsonResponse2=rr.json()
 #temp is given in kelvin so I converted to celcius
 #wind speed is in m/s
 #wind direction is in degrees, does not return direction.  Still looking into that
-min_temp=str(float(jsonResponse2["list"][0]["temp"]["min"])-273)
-target.write(min_temp)
+min_temp=(9/5)*(float(jsonResponse2["list"][0]["temp"]["min"])-273)+32
+target.write(str(min_temp))
 target.write(',')
-max_temp=str(float(jsonResponse2["list"][0]["temp"]["max"])-273)
-target.write(max_temp)
+max_temp=(9/5)*(float(jsonResponse2["list"][0]["temp"]["max"])-273)+32
+target.write(str(max_temp))
 target.write(',')
 target.write(jsonResponse["weather"][0]["main"])
 target.write(',')
