@@ -7,9 +7,11 @@ import json
 #client_secret=NHSPTJqz4EdfgwdwbcDvWSN5Pa5kP3Nrvp96b887
 
 target = open('advisory_info.config','w')
-f = requests.get('https://api.aerisapi.com/advisories/closest?p=13201&limit=5&radius=50mi&client_id=SuAEvRZ31hmCxUhGx5o94&client_secret=NHSPTJqz4EdfgwdwbcDvWSN5Pa5kP3Nrvp96b887')
+f = requests.get('https://api.aerisapi.com/advisories/closest?p=02134&limit=5&radius=50mi&client_id=SuAEvRZ31hmCxUhGx5o94&client_secret=NHSPTJqz4EdfgwdwbcDvWSN5Pa5kP3Nrvp96b887')
 jsonResponse=f.json()
-target.write(jsonResponse["response"][0]["details"]["body"])
+#print(jsonResponse)
+if jsonResponse["response"]:
+	target.write(jsonResponse["response"][0]["details"]["body"])
 # target.write(', ')
 # target.write(jsonResponse["response"][0]["details"]["name"])
 # target.close()
