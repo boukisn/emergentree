@@ -40,7 +40,7 @@ jsonResponse=f.json()
 target.write(jsonResponse["response"][0]["details"]["type"])
 target.write(', ')
 target.write(jsonResponse["response"][0]["details"]["name"])
-target.write('\n')
+#target.write('\n')
 target.close()
 
 
