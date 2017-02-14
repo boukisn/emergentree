@@ -20,17 +20,21 @@ import json
 
 
 target = open('weather.config','w')
-r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=Boston&APPID=75288d4cb078b45034abd9b522bd4192')
+r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=Boston,us&APPID=75288d4cb078b45034abd9b522bd4192')
 jsonResponse=r.json()
+rr = requests.get('http://api.openweathermap.org/data/2.5/forecast/daily?q=Boston,us&cnt=1&APPID=75288d4cb078b45034abd9b522bd4192')
+jsonResponse2=rr.json()
+#print(r.json())
 ############max temp min temp weather_description more_in_depth_description windspeed wind_direction##############
 
 #temp is given in kelvin so I converted to celcius
 #wind speed is in m/s
 #wind direction is in degrees, does not return direction.  Still looking into that
-
-target.write(str(float(jsonResponse["main"]["temp_max"]) - 273))
+min_temp=str(float(jsonResponse2["list"][0]["temp"]["min"])-273)
+target.write(min_temp)
 target.write(' ')
-target.write(str(float(jsonResponse["main"]["temp_min"]) - 273))
+max_temp=str(float(jsonResponse2["list"][0]["temp"]["max"])-273)
+target.write(max_temp)
 target.write(' ')
 target.write(jsonResponse["weather"][0]["main"])
 target.write(' ')
