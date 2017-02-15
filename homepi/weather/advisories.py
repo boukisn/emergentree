@@ -37,9 +37,10 @@ target = open('advisories.log','w')
 f = requests.get('https://api.aerisapi.com/advisories/closest?p=02134&limit=5&radius=50mi&client_id=SuAEvRZ31hmCxUhGx5o94&client_secret=NHSPTJqz4EdfgwdwbcDvWSN5Pa5kP3Nrvp96b887')
 jsonResponse=f.json()
 #target.write('\n')
-target.write(jsonResponse["response"][0]["details"]["type"])
-target.write(',')
-target.write(jsonResponse["response"][0]["details"]["name"])
+if jsonResponse["response"]:
+	target.write(jsonResponse["response"][0]["details"]["type"])
+	target.write(',')
+	target.write(jsonResponse["response"][0]["details"]["name"])
 #target.write('\n')
 target.close()
 
