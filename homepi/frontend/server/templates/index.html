@@ -67,7 +67,7 @@
         <div class="row" style="position: fixed; top: 64; right: 0; bottom: 0; left: 0;">
 			<div class="col s7" style="height: 100%">
 				<div class="card-panel center-align" style="height: 100%">
-				<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+				<div id="container" style=""></div>
 				</div>
 			</div>
 
@@ -75,7 +75,7 @@
 				<div class="card" style="height: 100%">
     				<div class="card-content center-align">
     					<div class="row">
-    						<div class="col s10 offset-s1 left-align">
+    						<div class="col s12 left-align">
     							<div id="day" style="font-size: 25px; font-weight: 300;"></div>
     							<div id="date" style="font-size: 25px; font-weight: 300;  margin-bottom: 5px;"></div>
     							<div id="weather" style="font-size: 20px; font-weight: 100; margin-bottom: 10px;">
@@ -152,7 +152,8 @@ $(document).ready(function(e) {
                         series.addPoint([x, y], true, true);
                     }, 5000);
                 }
-            }
+            },
+            height: 350
         },
         title: {
             text: ''
