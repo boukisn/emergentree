@@ -1,0 +1,30 @@
+.chip .icon_info {
+    cursor: pointer;
+    float: left;
+    font-size: 16px;
+    line-height: 32px;
+    padding-right: 8px;
+    color: #03a9f4;
+}
+
+.chip .icon_alert {
+    cursor: pointer;
+    float: left;
+    font-size: 16px;
+    line-height: 32px;
+    padding-right: 8px;
+    color: #ff8f00 ;
+}
+
+.risk_text {
+	font-size: 18px;
+	font-weight: 300;
+	display:inline-block;
+}
+
+.risk_value {
+	display: inline-block;
+	font-size: 18px;
+	font-weight: 700;
+	text-decoration: underline; 
+}

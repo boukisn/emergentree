@@ -1,35 +1,6 @@
 
 <style>
-.chip .icon_info {
-    cursor: pointer;
-    float: left;
-    font-size: 16px;
-    line-height: 32px;
-    padding-right: 8px;
-    color: #03a9f4;
-}
 
-.chip .icon_alert {
-    cursor: pointer;
-    float: left;
-    font-size: 16px;
-    line-height: 32px;
-    padding-right: 8px;
-    color: #ff8f00 ;
-}
-
-.risk_text {
-	font-size: 18px;
-	font-weight: 300;
-	display:inline-block;
-}
-
-.risk_value {
-	display: inline-block;
-	font-size: 18px;
-	font-weight: 700;
-	text-decoration: underline; 
-}
 
 </style>
 <html>
@@ -42,23 +13,31 @@
 		<link type="text/css" rel="stylesheet" href="/static/css/materialize.min.css"  media="screen,projection"/>
 		<link type="text/css" rel="stylesheet" href="/static/css/weather-icons.min.css"  media="screen,projection"/>
 		<link type="text/css" rel="stylesheet" href="/static/css/weather-icons-wind.min.css"  media="screen,projection"/>
+		<link href="/static/css/keyboard.css" rel="stylesheet">
+		<link href="/static/css/keyboard-basic.css" rel="stylesheet">
 
 		<!--Let browser know website is optimized for mobile-->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+		<link type="text/css" rel="stylesheet" href="/static/css/index.css"  media="screen,projection"/>
 	</head>
 
 	<body class="light-blue lighten-5" style="max-width: 100%; overflow-x: hidden; max-height: 100%; overflow-y: hidden;">
 		<!--Import jQuery before materialize.js-->
-		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 		<script type="text/javascript" src="/static/js/materialize.min.js"></script>
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		<script type="text/javascript" src="/static/js/jquery.keyboard.js"></script>
+		<script type="text/javascript" src="/static/js/index.js"></script>
+		
 		<nav>
 			<div class="nav-wrapper blue lighten-2">
 				<img src="/static/images/logo.png" style="margin-left: 0.5%; height: 100%"></img>
 				<a href="#" class="brand-logo">EmergenTree</a>
 				<ul id="nav-mobile" class="right hide-on-med-and-down">
+					<li><input id="input_test" placeholder="Example..."></input></li>
 					<li><a href="#!"><i class="material-icons">visibility</i></a></li>
 					<li><a href="#!"><i class="material-icons">settings</i></a></li>
 				</ul>
@@ -122,258 +101,4 @@
 			</div>
 		</div>
 	</body>
-</html>	
-
-<script>
-$(document).ready(function(e) {
-
-    Highcharts.setOptions({
-        global: {
-            useUTC: false
-        }
-    });
-
-    Highcharts.chart('container', {
-    	credits: {
-    		enabled: false
-    	},
-        chart: {
-            type: 'spline',
-            animation: Highcharts.svg, // don't animate in old IE
-            marginRight: 10,
-            events: {
-                load: function () {
-
-                    // set up the updating of the chart each second
-                    var series = this.series[0];
-                    setInterval(function () {
-                        var x = (new Date()).getTime(), // current time
-                            y = Math.random();
-                        series.addPoint([x, y], true, true);
-                    }, 5000);
-                }
-            },
-            height: 350
-        },
-        title: {
-            text: ''
-        },
-        xAxis: {
-            type: 'datetime',
-            tickPixelInterval: 150
-        },
-        yAxis: {
-            title: {
-                text: ''
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }],
-            labels: {
-            	enabled: false
-            }
-        },
-        tooltip: {
-            formatter: function () {
-                return '<b>' + this.series.name + '</b><br/>' +
-                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                    Highcharts.numberFormat(this.y, 2);
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        exporting: {
-            enabled: false
-        },
-        series: [{
-            name: 'Random data',
-            data: (function () {
-                // generate an array of random data
-                var data = [],
-                    time = (new Date()).getTime(),
-                    i;
-
-                for (i = -19; i <= 0; i += 1) {
-                    data.push({
-                        x: time + i * 5000,
-                        y: Math.random()
-                    });
-                }
-                return data;
-            }()),
-            marker: { enabled: false }
-        }]
-    });
-
-	update_content();
-    var refresher = setInterval("update_content();",5000); // 30 seconds
-
-})
-
-function update_content(){
-	update_risk();
-	update_weather();
-	update_date();
-}
-
-function nth(d) {
-  if(d>3 && d<21) return 'th'; // thanks kennebec
-  switch (d % 10) {
-        case 1:  return "st";
-        case 2:  return "nd";
-        case 3:  return "rd";
-        default: return "th";
-    }
-}
-
-function update_date(){
-	var d = new Date();
-	var month = "January,February,March,April,May,June,July,August,September,October,November,December".split(",")[d.getMonth()];
-	var weekday =  "Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday".split(",")[d.getDay()];
-	var ordinal = nth(d.getDate())
-
-	$("#day").text(weekday + ",");
-	$("#date").text(month + " " + d.getDate() + ordinal);
-}
-
-function update_risk(){
-    $.ajax({
-		type: "GET",
-		url: "http://127.0.0.1:5000/risk",
-		cache: false,
-		data: { get_param: 'value' }, 
-		dataType: 'json',
-		success: function (data) { 
-			var output_risk = data.risk;
-
-			switch(output_risk) {
-			    case "EXTREME":
-			        $("#risk").attr("class","risk_value tooltipped red-text text-lighten-1");
-			        break;
-			    case "HIGH":
-			        $("#risk").attr("class","risk_value tooltipped deep-orange-text text-lighten-1");
-			        break;
-			    case "MEDIUM":
-			        $("#risk").attr("class","risk_value tooltipped amber-text text-lighten-1");
-			        break;
-			    case "LOW":
-			        $("#risk").attr("class","risk_value tooltipped green-text text-lighten-1");
-			        break;
-			    case "MINIMAL":
-			        $("#risk").attr("class","risk_value tooltipped light-blue-text text-lighten-1");
-			        break;
-			    default:
-			    	output_risk = "UNKNOWN"
-			        $("#risk").attr("class","risk_value tooltipped light-blue-text text-lighten-1");
-			        break;
-			}
-			output_risk += " RISK";
-
-			$("#risk").text(output_risk);
-		}
-	}); 
-}
-
-function update_weather(){
-    $.ajax({
-		type: "GET",
-		url: "http://127.0.0.1:5000/current_weather",
-		cache: false,
-		data: { get_param: 'value' }, 
-		dataType: 'json',
-		success: function (data) { 
-			var output_risk = data.high + " " + data.low + " " + data.status + " " + data.wind_speed + " " + data.wind_dir ;
-
-			switch(data.status.charAt(0)) {
-			    case '2':
-			        $("#status").attr("class","wi wi-thunderstorm");
-			        break;
-			    case '3':
-			        $("#status").attr("class","wi wi-sprinkle");
-			        break;
-			    case '5':
-			        $("#status").attr("class","wi wi-rain");
-			        break;
-			    case '6':
-			        $("#status").attr("class","wi wi-snow");
-			        break;
-			    case '7':
-			        $("#status").attr("class","wi wi-fog");
-			        break;
-			    case '8':
-			    	switch(data.status){
-			    		case "800":
-					        var hour = (new Date).getHours();
-					        var quarter = Math.floor(hour/6);
-
-					        if((quarter == 0) || (quarter == 3))
-					        {
-					        	$("#status").attr("class","wi wi-night-clear");
-					        }
-					        else
-					        {
-					        	$("#status").attr("class","wi wi-day-sunny");
-					        }
-					        break;
-					    case "801":
-					        var hour = (new Date).getHours();
-					        var quarter = Math.floor(hour/6);
-					        
-					        if((quarter == 0) || (quarter == 3))
-					        {
-					        	$("#status").attr("class","wi wi-night-alt-cloudy");
-					        }
-					        else
-					        {
-					        	$("#status").attr("class","wi wi-day-cloudy");
-					        }
-					        break;
-					    default:
-					        $("#status").attr("class","wi wi-cloudy");
-			        		break;
-			    	}
-			        break;
-			    default:
-			        $("#status").attr("class","wi wi-na");
-			        break;
-			}
-
-			switch(data.wind_dir){
-				case "N":
-					$("#wind_dir").attr("class","wi wi-direction-up");
-					break;
-				case "NE":
-					$("#wind_dir").attr("class","wi wi-direction-up-right");
-					break;
-				case "E":
-					$("#wind_dir").attr("class","wi wi-direction-right");
-					break;
-				case "SE":
-					$("#wind_dir").attr("class","wi wi-direction-down-right");
-					break;
-				case "S":
-					$("#wind_dir").attr("class","wi wi-direction-down");
-					break;
-				case "SW":
-					$("#wind_dir").attr("class","wi wi-direction-down-left");
-					break;
-				case "W":
-					$("#wind_dir").attr("class","wi wi-direction-left");
-					break;
-				case "NW":
-					$("#wind_dir").attr("class","wi wi-direction-up-left");
-					break;
-			}
-
-			$("#high").text(data.high);
-			$("#low").text(data.low);
-			$("#wind_speed").text(data.wind_speed);
-		}
-	}); 
-}
-
-
-</script>
+</html>
