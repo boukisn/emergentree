@@ -3,6 +3,7 @@ from flask import Flask, jsonify, render_template
 app = Flask(__name__)
 
 alerts = {"HUW":{"desc":"Hurricane Warning","mult": 5.0}, "TOR":{"desc":"Tornado Warning","mult": 5.0}, "EWW":{"desc":"Extreme Wind Warning","mult": 5.0}, "EQW":{"desc":"Earthquake Warning","mult": 5.0}, "FRW":{"desc":"Fire Warning","mult": 5.0}, "TSW":{"desc":"Tsunami Warning","mult": 5.0}, "HUA":{"desc":"Hurricane Watch","mult": 1.5}, "TOA":{"desc":"Tornado Watch","mult": 1.5}, "TSA":{"desc":"Tsunami Watch","mult": 1.5}, "SVR":{"desc":"Severe Thunderstorm Warning","mult": 1.5}, "TRW":{"desc":"Tropical Storm Warning","mult": 1.5}, "HWW":{"desc":"High Wind Warning","mult": 1.5}, "BZW":{"desc":"Blizzard Warning","mult": 1.5}, "SVA":{"desc":"Severe Thunderstorm Watch","mult": 1.3}, "TRA":{"desc":"Tropical Storm Watch","mult": 1.3}, "HWA":{"desc":"High Wind Watch","mult": 1.3}, "WSW":{"desc":"Winter Storm Warning","mult": 1.2}, "CFW":{"desc":"Coastal Flood Warning","mult": 1.2}, "FLW":{"desc":"Flood Warning","mult": 1.2}, "WSA":{"desc":"Winter Storm Watch","mult": 1.1}, "CFA":{"desc":"Coastal Flood Watch","mult": 1.1}, "FLA":{"desc":"Flood Watch","mult": 1.1}}
+home = "/home/pi/emergentree/homepi/frontend/server/"
 
 @app.route("/")
 def home():
@@ -11,8 +12,8 @@ def home():
 @app.route("/risk")
 def risk():
 
-	weather_info = open("weather.config", 'r').readline().split(",")
-	output = float(open("risk.config", 'r').readline())
+	weather_info = open((home + "weather.config"), 'r').readline().split(",")
+	output = float(open((home + "risk.config"), 'r').readline())
 	
 	base_risk = 0.0
 
@@ -56,7 +57,7 @@ def risk():
 
 @app.route("/current_weather")
 def weather():
-	weather_info = open("weather.config", 'r').readline().split(",")
+	weather_info = open((home + "weather.config"), 'r').readline().split(",")
 	return jsonify(high=weather_info[0], low=weather_info[1], status=weather_info[2], wind_speed=weather_info[3], wind_dir=weather_info[4])
 
 @app.route("/data")
