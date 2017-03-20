@@ -18,4 +18,4 @@ file_to_download = sys.argv[1]
 
 
 # Assumes bucket already exists
-s3.Bucket('buteamfourteen').download_file(file_to_download, 'america2.txt')
+s3.Bucket('buteamfourteen').download_file(file_to_download, sys.argv[2])

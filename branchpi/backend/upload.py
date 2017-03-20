@@ -9,8 +9,8 @@ for bucket in s3.buckets.all():
     print(bucket.name)
 
 #TODO: Make error handling
-
-file_to_upload = sys.argv[1]
+file_name = sys.argv[1]
+file_to_upload = sys.argv[2]
 
 # print 'Number of arguments:', len(sys.argv), 'arguments.'
 # print 'Argument List:', str(sys.argv)
@@ -19,4 +19,4 @@ file_to_upload = sys.argv[1]
 
 # Assumes bucket already exists
 data = open(file_to_upload, 'rb')
-s3.Bucket('buteamfourteen').put_object(Key=file_to_upload, Body=data)
+s3.Bucket('buteamfourteen').put_object(Key=file_name, Body=data)

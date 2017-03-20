@@ -1,6 +1,7 @@
 import pyowm
 import requests
 import json
+import sys
 
 #AppID eTNLa2UVUaDHQZMFw8hP
 #App Code F9gx8fA34F1sS5V1i3q1dQ
@@ -19,7 +20,7 @@ import json
 
 
 
-target = open('weather.config','w')
+target = open(sys.argv[1],'w')
 r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=Boston,us&APPID=75288d4cb078b45034abd9b522bd4192')
 jsonResponse=r.json()
 rr = requests.get('http://api.openweathermap.org/data/2.5/forecast/daily?q=Boston,us&cnt=1&APPID=75288d4cb078b45034abd9b522bd4192')
@@ -30,23 +31,35 @@ jsonResponse2=rr.json()
 #temp is given in kelvin so I converted to celcius
 #wind speed is in m/s
 #wind direction is in degrees, does not return direction.  Still looking into that
-min_temp=(9/5)*(float(jsonResponse2["list"][0]["temp"]["min"])-273)+32
-target.write(str(min_temp))
-target.write(',')
-max_temp=(9/5)*(float(jsonResponse2["list"][0]["temp"]["max"])-273)+32
+max_temp=int(round((1.8)*(float(jsonResponse2["list"][0]["temp"]["max"])-273.15)+32.0))
 target.write(str(max_temp))
 target.write(',')
-target.write(jsonResponse["weather"][0]["main"])
+min_temp=int(round((1.8)*(float(jsonResponse2["list"][0]["temp"]["min"])-273.15)+32.0))
+target.write(str(min_temp))
 target.write(',')
 target.write(str(jsonResponse["weather"][0]["id"]))
 target.write(',')
-target.write(str(jsonResponse["wind"]["speed"]))
+target.write(str(int(round(jsonResponse["wind"]["speed"]))))
 target.write(',')
 
 def degToCompass(num):
-    val=int((num/22.5)+.5)
-    arr=["N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"]
-    return arr[(val % 16)]
+    if num >= 337.5 or num < 22.5:
+    	return "N"
+    elif num >= 22.5  and num < 67.5:
+    	return "NE"
+    elif num >= 67.5  and num < 112.5:
+    	return "E"
+    elif num >= 112.5 and num < 157.5:
+    	return "SE"
+    elif num >= 157.5 and num < 202.5:
+    	return "S"
+    elif num >= 202.5 and num < 247.5:
+    	return "SW"
+    elif num >= 247.5 and num < 292.5:
+    	return "W"
+    elif num >= 292.5 and num < 337.5:
+    	return "NW"
+
 deg=int(jsonResponse["wind"]["deg"])
 direction=degToCompass(deg)
 target.write(direction)
