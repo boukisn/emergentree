@@ -2,6 +2,7 @@ import pyowm
 import requests
 import json
 import sys
+import time
 
 #AppID eTNLa2UVUaDHQZMFw8hP
 #App Code F9gx8fA34F1sS5V1i3q1dQ
@@ -17,9 +18,20 @@ import sys
 
 #print(w.get_temperature('fahrenheit'))
 
+home_dir = "/home/pi/emergentree/homepi/warehouse/"
+current_hour = int(time.strftime("%H"))
+quarter = ""
+if current_hour >= 0 and current_hour < 6:
+    quarter = "1"
+elif current_hour >= 6 and current_hour < 12:
+    quarter = "2"
+elif current_hour >= 12 and current_hour < 18:
+    quarter = "3"
+elif current_hour >= 18 and current_hour <= 23:
+    quarter = "4"
 
-
-
+wind_speed_file = home_dir + "wind_" + time.strftime("%Y_%m_%d_") + quarter + ".log"
+wind_speed = open(wind_speed_file, 'a')
 target = open(sys.argv[1],'w')
 r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=Boston,us&APPID=75288d4cb078b45034abd9b522bd4192')
 jsonResponse=r.json()
@@ -40,6 +52,7 @@ target.write(',')
 target.write(str(jsonResponse["weather"][0]["id"]))
 target.write(',')
 target.write(str(int(round(jsonResponse["wind"]["speed"]))))
+wind_speed.write(str(float(jsonResponse["wind"]["speed"])))
 target.write(',')
 
 def degToCompass(num):
@@ -64,3 +77,4 @@ deg=int(jsonResponse["wind"]["deg"])
 direction=degToCompass(deg)
 target.write(direction)
 target.close()
+wind_speed.close()
