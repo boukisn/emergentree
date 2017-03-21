@@ -52,7 +52,8 @@ target.write(',')
 target.write(str(jsonResponse["weather"][0]["id"]))
 target.write(',')
 target.write(str(int(round(jsonResponse["wind"]["speed"]))))
-wind_speed.write(str(float(jsonResponse["wind"]["speed"])))
+wind_float = str(float(jsonResponse["wind"]["speed"])) + "\n"
+wind_speed.write(wind_float)
 target.write(',')
 
 def degToCompass(num):
