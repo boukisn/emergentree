@@ -66,14 +66,63 @@ $(document).ready(function(e) {
             title: {
                 text: ''
             },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }],
+            minorGridLineWidth: 0,
+        gridLineWidth: 0,
+        alternateGridColor: null,
             labels: {
             	enabled: false
+            },
+plotBands: [{ // Moderate breeze
+            from: -1,
+            to: 0.01,
+            color: 'rgba(41,182,246,0.1)',
+            label: {
+                text: 'Minimal',
+                style: {
+                    color: '#606060'
+                }
             }
+        }, { // Light air
+            from: 0.01,
+            to: 0.02,
+            color: 'rgba(102,187,106, 0.1)',
+            label: {
+                text: 'Low',
+                style: {
+                    color: '#606060'
+                }
+            }
+        }, { // Light breeze
+            from: 0.02,
+            to: 0.025,
+            color: 'rgba(255,202,40, 0.1)',
+            label: {
+                text: 'Medium',
+                style: {
+                    color: '#606060'
+                }
+            }
+        }, { // Gentle breeze
+            from: 0.025,
+            to: 0.03,
+            color: 'rgba(255,112,67, 0.1)',
+            label: {
+                text: 'High',
+                style: {
+                    color: '#606060'
+                }
+            }
+        }, { // Moderate breeze
+            from: 0.03,
+            to: 1,
+            color: 'rgba(239,83,80, 0.1)',
+            label: {
+                text: 'Extreme',
+                style: {
+                    color: '#606060'
+                }
+            }
+        }]
         },
         tooltip: {
             formatter: function () {
