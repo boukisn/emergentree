@@ -64,7 +64,12 @@ def weather():
 
 @app.route("/data")
 def data():
-    return "Hello World!"
+	data_dir = home_dir + "output.log"
+	data_array = []
+	for line in open(data_dir, 'r').readlines():
+		data_array.append(line[:-1])
+	latest_value = data_array[-1]
+	return jsonify(latest_value=latest_value,data=data_array)
 
 if __name__ == "__main__":
 	app.debug = True

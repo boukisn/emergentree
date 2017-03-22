@@ -1,3 +1,6 @@
+var ajax_data;
+var latest_value;
+
 $(document).ready(function(e) {
 	$('#input_test').keyboard({
 		layout: 'qwerty',
@@ -28,10 +31,26 @@ $(document).ready(function(e) {
                     // set up the updating of the chart each second
                     var series = this.series[0];
                     setInterval(function () {
-                        var x = (new Date()).getTime(), // current time
-                            y = Math.random();
-                        series.addPoint([x, y], true, true);
-                    }, 5000);
+                    	var hour = (new Date).getHours();
+                    	var minute = (new Date).getMinutes();
+                    	if((hour == 0 || hour == 6 || hour == 12 || hour == 18) && minute == 30)
+                    	{
+		                    $.ajax({
+								type: "GET",
+								url: "http://127.0.0.1:5000/data",
+								cache: false,
+								data: { get_param: 'value' }, 
+								dataType: 'json',
+								success: function (data) {
+									latest_value = parseFloat(data.latest_value);
+								},
+								async: false
+							});
+	                        var x = (new Date()).getTime(), // current time
+	                            y = latest_value;
+	                        series.addPoint([x, y], true, true);
+                    	}
+                    }, 60000);
                 }
             },
             height: 350
@@ -58,9 +77,7 @@ $(document).ready(function(e) {
         },
         tooltip: {
             formatter: function () {
-                return '<b>' + this.series.name + '</b><br/>' +
-                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                    Highcharts.numberFormat(this.y, 2);
+                return '<b>' + Highcharts.dateFormat('%A', this.x) + '</b><br/><b>' + Highcharts.dateFormat('%B %e', this.x) + nth(parseInt(Highcharts.dateFormat('%e', this.x))) + Highcharts.dateFormat(', %l%p', this.x) + '</b><br/>' + Highcharts.numberFormat(this.y, 2);
             }
         },
         legend: {
@@ -77,13 +94,41 @@ $(document).ready(function(e) {
                     time = (new Date()).getTime(),
                     i;
 
-                for (i = -19; i <= 0; i += 1) {
+                $.ajax({
+					type: "GET",
+					url: "http://127.0.0.1:5000/data",
+					cache: false,
+					data: { get_param: 'value' }, 
+					dataType: 'json',
+					success: function (data) {
+						ajax_data = data.data;
+					},
+					async: false
+				});
+
+				var now = new Date((new Date()).setMinutes(0));
+
+				var quarter = Math.floor((now.getHours())/6) + 1;
+				if(quarter == 1)
+					now = new Date(now.setHours(0));
+				else if(quarter == 2)
+					now = new Date(now.setHours(6));
+				else if(quarter == 3)
+					now = new Date(now.setHours(12));
+				else if(quarter == 4)
+					now = new Date(now.setHours(18));
+
+				var x_time = now;
+				
+                for (i = (ajax_data.length - 1); i >= 0; i -= 1) {
                     data.push({
-                        x: time + i * 5000,
-                        y: Math.random()
+                        x: x_time.getTime(),
+                        y: parseFloat(ajax_data[i])
                     });
+                    x_time.setHours(x_time.getHours() - 6);
                 }
-                return data;
+
+                return data.reverse();
             }()),
             marker: { enabled: false }
         }]
@@ -100,7 +145,7 @@ function update_content(){
 }
 
 function nth(d) {
-  if(d>3 && d<21) return 'th'; // thanks kennebec
+  if(d>3 && d<21) return 'th';
   switch (d % 10) {
         case 1:  return "st";
         case 2:  return "nd";
@@ -187,9 +232,9 @@ function update_weather(){
 			    	switch(data.status){
 			    		case "800":
 					        var hour = (new Date).getHours();
-					        var quarter = Math.floor(hour/6);
+					        var quarter = Math.floor(hour/6) + 1;
 
-					        if((quarter == 0) || (quarter == 3))
+					        if((quarter == 1) || (quarter == 4))
 					        {
 					        	$("#status").attr("class","wi wi-night-clear");
 					        }
@@ -200,9 +245,9 @@ function update_weather(){
 					        break;
 					    case "801":
 					        var hour = (new Date).getHours();
-					        var quarter = Math.floor(hour/6);
+					        var quarter = Math.floor(hour/6) + 1;
 					        
-					        if((quarter == 0) || (quarter == 3))
+					        if((quarter == 1) || (quarter == 4))
 					        {
 					        	$("#status").attr("class","wi wi-night-alt-cloudy");
 					        }

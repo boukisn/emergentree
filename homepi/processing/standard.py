@@ -2,15 +2,17 @@ import sys
 import math
 import numpy as np
 
-slopes = open (sys.argv[1], 'r' )
-config = open(sys.argv[2], 'w')
-
 avg_slopes = []
 dev_slopes = []
 
 days =[]
 counter = 0
 
+home_dir = "/home/pi/emergentree/homepi/frontend/server/"
+data_file = home_dir + "output.log"
+slopes = open (sys.argv[1], 'r' )
+config = open(sys.argv[2], 'w')
+output = open(data_file, 'a')
 
 for line in slopes:
 	avg_slopes.append(float(line))
@@ -49,23 +51,6 @@ for slope in avg_slopes:
 	new_slopes.append(slope)
 	#print(str(slope1) + " " +str(slope))
 
-"""def lin_fit(x, y):
-    '''Fits a linear fit of the form mx+b to the data'''
-    fitfunc = lambda params, x: params[0] * x 
-    errfunc = lambda p, x, y: fitfunc(p, x) - y              #create error function for least squares fit
-
-    init_a = 0.5                            #find initial value for a (gradient)
-    init_p = numpy.array((init_a))
-
-    #calculate best fitting parameters (i.e. m and b) using the error function
-    p1, success = scipy.optimize.leastsq(errfunc, init_p.copy(), args = (x, y))
-    f = fitfunc(p1, x)          #create a fit with those parameters
-    return p1, f   """
-
-
-
-
-
 x = np.array(days)
 
 y = np.array(new_slopes)
@@ -77,6 +62,9 @@ a, _, _, _ = np.linalg.lstsq(x, y)
 
 # Write to risk.config file
 config.write(str(a[0]))
+output_float = str(a[0]) + "\n"
+output.write(output_float)
+
 print
 print "Standard deviation increase per 6 hours:  " + str(a[0])
 print "Standard deviation increase per day:      " + str(a[0]*4)
