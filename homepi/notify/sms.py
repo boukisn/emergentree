@@ -3,7 +3,7 @@ import sys
 import re
 import sched
 import time
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 
 Buzzer = 14 # pin11/whatever pin on the Pi
