@@ -2,6 +2,7 @@ var ajax_data;
 var latest_value;
 
 $(document).ready(function(e) {
+
 	$('#input_test').keyboard({
 		layout: 'qwerty',
 		usePreview: false,
@@ -191,6 +192,7 @@ function update_content(){
 	update_risk();
 	update_weather();
 	update_date();
+	update_angle();
 }
 
 function nth(d) {
@@ -345,6 +347,52 @@ function update_weather(){
 			$("#high").text(data.high);
 			$("#low").text(data.low);
 			$("#wind_speed").text(data.wind_speed);
+		}
+	}); 
+}
+
+function update_angle(){
+    $.ajax({
+		type: "GET",
+		url: "http://127.0.0.1:5000/angle",
+		cache: false,
+		data: { get_param: 'value' }, 
+		dataType: 'json',
+		success: function (data) { 
+			var output_angle = data.angle;
+			var angle_float = parseFloat(output_angle);
+			var angle_percent = (angle_float/90.0)*100.0;
+
+			$("#angle_wrapper").html('');
+			if(angle_percent >= 1.0)
+			{
+				var bar_color = "";
+				if(angle_percent < 15.0)
+				{
+					bar_color = "rgb(102,187,106)";
+				}
+				else if(angle_percent >= 15.0 && angle_percent < 45.0)
+				{
+					bar_color = "rgb(255,202,40)";
+				}
+				else if(angle_percent >= 45.0)
+				{
+					bar_color = "rgb(239,83,80)";
+
+					if(angle_percent > 90.0)
+						angle_percent = 100.0;
+				}
+				
+				$("#angle_wrapper").html('<div id="angle" class="small"></div>');
+				
+				$("#angle").percircle({
+					text: (output_angle + "°"),
+					percent: angle_percent,
+					progressBarColor: bar_color
+				});
+			}
+			
+			//$("#risk").text(output_risk);
 		}
 	}); 
 }
