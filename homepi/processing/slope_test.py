@@ -8,8 +8,6 @@ import os.path
 tree_stats = open (sys.argv[1], 'r' )
 wind_speeds = open(sys.argv[2], 'r')
 avg_var = open(sys.argv[3], 'ab')
-x_deg =[]
-y_deg=[]
 x_acc=[]
 y_acc=[]
 z_acc=[]
@@ -49,7 +47,10 @@ else:
 	file_name.close()
 
 for line in tree_stats:
-	total_acc.append(float(line))
+	x_acc.append(float(line.split(" ")[2]))
+	y_acc.append(float(line.split(" ")[3]))
+	z_acc.append(float(line.split(" ")[4]))
+	total_acc.append(math.sqrt((x_acc[-1]^2)+(y_acc[-1]^2)+(z_acc[-1]^2)))
  
 for line in wind_speeds:
 	wind.append(float(line))
