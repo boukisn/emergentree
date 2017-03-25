@@ -7,7 +7,9 @@ import RPi.GPIO as GPIO
 
 
 Buzzer = 4 # whatever pin on the Pi
-
+home_dir = "/home/pi/emergentree/homepi/frontend/server/"
+severity_file = home_dir + "risk.config"
+settings_file = home_dir + "settings.config"
 
 def setup(pin):
 	global BuzzerPin
@@ -48,7 +50,7 @@ def severity_checker(sc,sms_message,gpio_alarm,sns):
 
 #Do this shit every minute
 
-	f = open('serverity.log', "r")
+	f = open(severity_file, "r")
 	severity_info = f.readlines()
 	f.close()
 
@@ -59,7 +61,7 @@ def severity_checker(sc,sms_message,gpio_alarm,sns):
 	severity_flag = severity_array[1] 
 
 	#Open the phone number/message file
-	g = open('phone_config.log',"r")
+	g = open(settings_file,"r")
 	phone_configuration = g.readlines()
 	g.close()
 
@@ -76,7 +78,7 @@ def severity_checker(sc,sms_message,gpio_alarm,sns):
 			on()
 			gpio_alarm = True
 		if(sms_message == False):
-			sns.publish(PhoneNumber = phone_number, Message = 'Howdy')
+			sns.publish(PhoneNumber = phone_number, Message = 'EmergenTree Alert!\n\nYour tree is at EXTREME risk of potentially causing damage.')
 			sms_message = True	
 		
 		print "FUCK!"
@@ -84,7 +86,7 @@ def severity_checker(sc,sms_message,gpio_alarm,sns):
 	elif (severity_flag == "HIGH"):
 		#do the text message
 		if(sms_message == False):
-			sns.publish(PhoneNumber = phone_number, Message = 'Howdy')
+			sns.publish(PhoneNumber = phone_number, Message = 'EmergenTree Alert!\n\nYour tree is at HIGH risk of potentially causing damage.')
 			sms_message = True
 		#should probably turn on the alarm if its going	
 		if(gpio_alarm == True):
