@@ -14,16 +14,16 @@ def setup(pin):
 	BuzzerPin = pin
 	GPIO.setmode(GPIO.BOARD) # Numbers GPIOs by physical location
 	GPIO.setup(BuzzerPin, GPIO.OUT)
-	GPIO.output(BuzzerPin, GPIO.HIGH)
+	GPIO.output(BuzzerPin, 0)
 
 def on():
-	GPIO.output(BuzzerPin, GPIO.LOW)
+	GPIO.output(BuzzerPin, 1)
 
 def off():
-	GPIO.output(BuzzerPin, GPIO.HIGH)
+	GPIO.output(BuzzerPin, 0)
 
 def destroy():
-	GPIO.output(BuzzerPin, GPIO.HIGH)
+	GPIO.output(BuzzerPin, 0)
 	GPIO.cleanup() # Release resource
 
 
