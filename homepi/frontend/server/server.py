@@ -29,7 +29,9 @@ def risk():
 	weather_dir = home_dir + "weather.config"
 	risk_dir = home_dir + "risk.config"
 	weather_info = open(weather_dir, 'r').readline().split(",")
-	output = float(open(risk_dir, 'r').readline())
+	output_file = open(risk_dir, 'r')
+	output = float(output_file.readline().split(",")[0])
+	output_file.close()
 	
 	base_risk = 0.0
 
@@ -68,6 +70,10 @@ def risk():
 		risk = "HIGH"
 	elif risk_float >= 5.0:
 		risk = "EXTREME"
+
+	output_file_again = open(risk_dir, 'w')
+	output_file_write_string = str(output) + "," + risk
+	output_file_again.write(output_file_write_string)
 
 	return jsonify(risk=risk,reasons=reasons)
 
