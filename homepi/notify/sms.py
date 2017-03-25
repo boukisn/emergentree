@@ -6,7 +6,7 @@ import time
 import RPi.GPIO as GPIO
 
 
-Buzzer = 14 # pin11/whatever pin on the Pi
+Buzzer = 4 # whatever pin on the Pi
 
 
 def setup(pin):
