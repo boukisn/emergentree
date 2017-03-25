@@ -53,7 +53,7 @@ for line in tree_stats:
 	total_acc.append(math.sqrt((x_acc[-1]^2)+(y_acc[-1]^2)+(z_acc[-1]^2)))
  
 for line in wind_speeds:
-	wind.append(float(line))
+	wind.append(float(line.split(",")[4]))
 
 avg_var.write(str(numpy.mean(total_acc)) +' ' + str(numpy.mean(wind)) +'\n') 
 print
