@@ -109,5 +109,6 @@ setup(Buzzer)
 s.enter(5, 1, severity_checker, (s,sms_message,gpio_alarm,sns))
 s.run()			
 
-
+except KeyboardInterrupt:
+	destroy()
 
