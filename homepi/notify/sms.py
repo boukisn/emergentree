@@ -69,7 +69,7 @@ def severity_checker(sc,sms_message,gpio_alarm,sns):
 	phone_number = phone_configuration_array[0]
 
 
-	if (severity_number > 4):
+	if (severity_flag == "EXTREME"):
 		#do the text message
 		if (gpio_alarm == False):
 			#Turn on the sound
@@ -81,7 +81,7 @@ def severity_checker(sc,sms_message,gpio_alarm,sns):
 		
 		print "FUCK!"
 
-	elif (severity_number > 3 and severity_number < 4):
+	elif (severity_flag == "HIGH"):
 		#do the text message
 		if(sms_message == False):
 			sns.publish(PhoneNumber = phone_number, Message = 'Howdy')
