@@ -1,6 +1,8 @@
 import sys
 import math
 import numpy
+import os.path
+
 
 
 tree_stats = open (sys.argv[1], 'r' )
@@ -13,6 +15,39 @@ y_acc=[]
 z_acc=[]
 wind = []
 total_acc = []
+anglesx=[]
+anglesy=[]
+angles=[]
+
+
+
+currangles = ""
+filename = "/home/pi/emergentree/homepi/frontend/server/angle.config"
+if os.path.exists(filename):
+	f = open(filename,'r')
+	for line in f:
+		currangles = line
+	f.close()
+	f = open(filename,'w')
+
+	for line in tree_stats:
+		anglesx.append(float(line.split(" ")[0]))
+		anglesy.append(float(line.split(" ")[1]))
+
+	avgx = float(numpy.mean(anglesx))
+	avgy = float(numpy.mean(anglesy))
+	variance = abs(numpy.mean((float(currangles.split(",")[0]) - avgx) + (float(currangles.split(",")[1]) - avgy)))
+	f.write(currangles.split(",")[0]+","+currangles.split(",")[1]+","+str(variance))
+	f.close()
+
+else:
+	for line in tree_stats:
+		anglesx.append(float(line.split(" ")[0]))
+		anglesy.append(float(line.split(" ")[1]))
+	file_name = open('/home/pi/emergentree/homepi/frontend/server/angle.config','w+')
+	file_name.write(str(numpy.mean(anglesx))+","+str(numpy.mean(anglesy))+","+"0")
+	file_name.close()
+
 for line in tree_stats:
 	total_acc.append(float(line))
  
@@ -21,9 +56,9 @@ for line in wind_speeds:
 
 avg_var.write(str(numpy.mean(total_acc)) +' ' + str(numpy.mean(wind)) +'\n') 
 print
-print "Writing..."
-print "Average wind speed:            " + str(numpy.mean(wind))
-print "Average overall acceleration:  " + str(numpy.mean(total_acc))
+print ("Writing...")
+print ("Average wind speed:            " + str(numpy.mean(wind)))
+print ("Average overall acceleration:  " + str(numpy.mean(total_acc)))
 print
 
 	
