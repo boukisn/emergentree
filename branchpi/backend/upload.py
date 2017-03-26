@@ -2,7 +2,10 @@ import boto3
 import sys
 
 # Let's use Amazon S3
-s3 = boto3.resource('s3')
+s3 = boto3.resource('s3',aws_access_key_id='AKIAJDUDA4LPBJRHNTXA',
+         aws_secret_access_key='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')
+
+
 
 # Print out bucket names
 for bucket in s3.buckets.all():
