@@ -23,6 +23,21 @@ def on():
 
 def off():
 	GPIO.output(BuzzerPin, 1)
+	
+def beep_three(x):
+	on()
+	time.sleep(x)
+	off()
+	time.sleep(x)
+	on()
+	time.sleep(x)
+	off()
+	time.sleep(x)
+	on()
+	time.sleep(x)
+	off()
+	time.sleep(x)
+	
 
 def destroy():
 	GPIO.output(BuzzerPin, 1)
