@@ -25,9 +25,8 @@
 
 	<body class="light-blue lighten-5" style="max-width: 100%; overflow-x: hidden; max-height: 100%; overflow-y: hidden;">
 		<!--Import jQuery before materialize.js-->
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-		<script type="text/javascript" src="/static/js/materialize.min.js"></script>
-		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+		<script type="text/javascript" src="/static/js/materialize.js"></script>
 		<script src="https://code.highcharts.com/highcharts.js"></script>
 		<script src="https://code.highcharts.com/modules/exporting.js"></script>
 		<script type="text/javascript" src="/static/js/jquery.keyboard.js"></script>
@@ -39,9 +38,9 @@
 				<img src="/static/images/logo.png" style="margin-left: 0.5%; height: 100%"></img>
 				<a href="#" class="brand-logo">EmergenTree</a>
 				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li><input id="input_test" placeholder="Example..."></input></li>
-					<li><a href="#!"><i class="material-icons">visibility</i></a></li>
-					<li><a href="#!"><i class="material-icons">settings</i></a></li>
+					<!--<li><input id="input_test" placeholder="Example..."></input></li>-->
+					<li><a  id="report" href="/report"><i class="material-icons">visibility</i></a></li>
+					<li><a id="settings" href="#!"><i class="material-icons">settings</i></a></li>
 				</ul>
 			</div>
 		</nav>
@@ -71,7 +70,7 @@
     							<p class="risk_text">
     							Your tree is at <span id="risk" class="tooltipped" data-position="left" data-delay="50" data-tooltip="Explanation of risk."></span> of potentially causing damage.
 								</p>
-								<div id="angle_wrapper" style="margin-top: 15px; position: absolute; top: 5; right: 5;" class="tooltipped" data-position="left" data-delay="50" data-html="true" data-tooltip="Your tree has<br>shifted this amount"></div>
+								<div id="angle_wrapper" style="margin-top: 15px; position: absolute; top: 5; right: 5;" class="tooltipped" data-position="left" data-delay="50" data-html="true" data-tooltip="Your tree has shifted by this amount."></div>
     						</div>
     					</div>
     					
@@ -81,6 +80,7 @@
 						<!-- <span class="light-blue-text text-lighten-1" style="font-size: 30px; font-weight: 700;">MINIMAL RISK</span> -->
 						
     				</div>
+
 	    			<div class="card-action">
 	    			<div class="chip tooltipped" data-position="left" data-delay="50" data-tooltip="High Wind Warning in your area.">
 						    			Weather
@@ -103,5 +103,20 @@
 				</div>
 			</div>
 		</div>
+		<div class="tap-target" data-activates="report">
+	    <div class="tap-target-content">
+	      <h5>Title</h5>
+	      <p>A bunch of text</p>
+	    </div>
+	  </div>
 	</body>
 </html>
+<script>
+$(document).ready(function(e) {
+	$(".tap-target").tapTarget("open");
+	$(".close").on('click', function() {
+        var tooltip_id = "#" + $(this).parent().attr("data-tooltip-id");
+        $(tooltip_id).remove();
+    });
+});
+</script>
