@@ -1,0 +1,188 @@
+
+<style>
+img {
+	height: 250px;
+	border-radius: 5px;
+}
+
+.main-carousel {
+	margin: auto;
+  width: 90%;
+  height: 250px;
+}
+
+.carousel-cell {
+	margin-right: 10px;
+}
+
+.material-placeholder {
+	z-index: 99;
+}
+
+.flickity-prev-next-button {
+  width: 100px;
+  height: 100px;
+  background: transparent;
+}
+.flickity-prev-next-button:hover {
+  background: transparent;
+}
+/* arrow color */
+.flickity-prev-next-button .arrow {
+  fill: white;
+}
+.flickity-prev-next-button.no-svg {
+  color: white;
+}
+/* hide disabled button */
+.flickity-prev-next-button:disabled {
+  display: none;
+}
+
+</style>
+<html>
+	<head>
+		<title>EmergenTree</title>
+		<!--Import Google Icon Font-->
+		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+		<!--Import materialize.css-->
+		<link type="text/css" rel="stylesheet" href="/static/css/materialize.min.css"  media="screen,projection"/>
+
+		<!--Let browser know website is optimized for mobile-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+		<link type="text/css" rel="stylesheet" href="/static/css/index.css"  media="screen,projection"/>
+		<link type="text/css" rel="stylesheet" href="/static/css/image-picker.css"  media="screen,projection"/>
+		<link rel="stylesheet" href="/static/css/flickity.css" media="screen">
+	</head>
+
+	<body class="light-blue lighten-5">
+		<!--Import jQuery before materialize.js-->
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="/static/js/materialize.min.js"></script>
+		<script type="text/javascript" src="/static/js/image-picker.js"></script>
+		<script type="text/javascript" src="/static/js/flickity.pkgd.min.js"></script>
+		
+		<nav>
+			<div class="nav-wrapper blue lighten-2">
+				<img src="/static/images/logo.png" style="margin-left: 0.5%; height: 100%"></img>
+				<a href="/" class="brand-logo">EmergenTree</a>
+				<ul id="nav-mobile" class="right hide-on-med-and-down">
+					<!--<li><input id="input_test" placeholder="Example..."></input></li>-->
+					<li class="active"><a href="/report"><i class="material-icons">visibility</i></a></li>
+					<li><a href="#!"><i class="material-icons">settings</i></a></li>
+				</ul>
+			</div>
+		</nav>
+        <div class="row" style="position: fixed; top: 64; right: 0; bottom: 0; left: 0;">
+			<div class="col s12" style="height: 100%">
+				<div class="card-panel center-align" style="height: 100%">
+				<div class="col s7">
+				<div class="main-carousel">
+					<div class="carousel-cell"><img src="/static/images/leaves.jpg"></img></div>
+					<div class="carousel-cell"><img src="/static/images/bark.jpg"></img></div>
+					<div class="carousel-cell"><img src="/static/images/slimy_roots.jpg"></img></div>
+					<div class="carousel-cell"><img src="/static/images/open_wounds.jpg"></img></div>
+					<div class="carousel-cell"><img src="/static/images/fungus.png"></img></div>
+					<div class="carousel-cell"><img src="/static/images/bark_cracks.png"></img></div>
+				</div>
+				<h5 id="title" style="margin-top: 50px;">Discolored Leaves</h5>
+				<p id="caption" >The leaves on your tree are brown or yellow during growing season.</p>
+				</div>
+				<div class="input-field col s5 left-align" style="z-index: 0;">
+				<h5>My tree is exhibiting signs of...</h5>
+				<form action="#">
+				    <p>
+				      <input type="checkbox" id="check1" />
+				      <label for="check1">Discolored Leaves</label>
+				    </p>
+				    <p>
+				    	
+				     <input type="checkbox" id="check2" />
+				      <label for="check2">Insect Damage</label>
+
+				    </p>
+				    <p>
+				      <input type="checkbox" id="check3" />
+				      <label for="check3">Rotten Roots</label>
+				    </p>
+				    <p>
+				     <input type="checkbox" id="check4" />
+				      <label for="check4">Openings or Soft Spots</label>
+				    </p>
+				    <p>
+				      <input type="checkbox" id="check5" />
+				      <label for="check5">Trunk Fungus</label>
+				    </p>
+				    <p>
+				      <input type="checkbox" id="check6" />
+				      <label for="check6">Bark Decay</label>
+				    </p>
+				    <a id="save_form" class="waves-effect waves-light btn" style="margin-top: 20px;">Save</a>
+				  </form>
+
+
+  </div>
+				</div>
+			</div>
+
+		</div>
+	</body>
+</html>
+
+<script>
+$(document).ready(function(e) {
+	$('select').material_select();
+	var $gallery = $('.main-carousel').flickity({
+	  cellAlign: 'left',
+	  contain: true,
+	  resize: false,
+	  setGallerySize: false,
+	  cellAlign: "center",
+	  contain: false,
+	  cellSelector: '.carousel-cell'
+	});
+
+	var flkty = $gallery.data('flickity');
+	var titleArray = ["Discolored Leaves","Insect Damage","Rotten Roots","Openings or Soft Spots","Trunk Fungus","Bark Decay"];
+	var messageArray = ["The leaves on your tree are brown or yellow during growing season.","Your tree bark has rows of holes from wood-boring insects.","The roots of your tree look or feel slimy.","Your tree has an open wound or soft spot at its base.","Your tree has fungus growing on its trunk.","Your tree has large cracks in its bark."];
+
+	$('.main-carousel').on( 'select.flickity', function() {
+		$("#title").text(titleArray[flkty.selectedIndex]);
+  		$("#caption").text(messageArray[flkty.selectedIndex]);
+	});
+
+	$('#save_form').on( 'click', function() {
+  		var checkedArray = [];
+  		var tree_url = "http://127.0.0.1:5000/tree_data?";
+  		for(var i = 1; i <= 6; i++)
+  		{
+
+  			if(document.getElementById("check" + i.toString()).checked)
+  				checkedArray[i-1] = "1";
+  			else
+  				checkedArray[i-1] = "0";
+
+  		}
+  		tree_url += "leaves=" + checkedArray[0] + "&";
+  		tree_url += "bark=" + checkedArray[1] + "&";
+  		tree_url += "slimy_roots=" + checkedArray[2] + "&";
+  		tree_url += "open_wounds=" + checkedArray[3] + "&";
+  		tree_url += "fungus=" + checkedArray[4] + "&";
+  		tree_url += "bark_cracks=" + checkedArray[5];
+
+  		$.ajax({
+		    type: 'POST',
+		    url: tree_url,
+		    success: function(msg){
+		        console.log(checkedArray);
+		    }
+		});
+
+		Materialize.toast('Saved!', 3000);
+	});
+
+
+});
+</script>
