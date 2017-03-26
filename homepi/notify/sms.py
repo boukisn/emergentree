@@ -43,6 +43,7 @@ def beep_once(x):
 	time.sleep(x)
 	off()
 	
+	
 def destroy():
 	GPIO.output(BuzzerPin, 1)
 	GPIO.cleanup() # Release resource
@@ -96,10 +97,10 @@ def severity_checker(sc,sms_message,gpio_alarm,sns):
 		if (gpio_alarm == False):
 			#Turn on the sound
 			if(extreme_flag == False):
-				beep_three(200)
+				beep_three(2)
 				extreme_flag = True
 			else:
-				beep_once(300)
+				beep_once(4)
 			gpio_alarm = True
 		if(sms_message == False):
 			sns.publish(PhoneNumber = phone_number, Message = 'EmergenTree Alert!\n\nYour tree is at EXTREME risk of potentially causing damage.')
@@ -132,9 +133,10 @@ def severity_checker(sc,sms_message,gpio_alarm,sns):
 #But also start the loop
 
 setup(Buzzer)
-s.enter(5, 1, severity_checker, (s,sms_message,gpio_alarm,sns))
-s.run()			
-
-#except KeyboardInterrupt:
-#	destroy()
+try:
+	s.enter(5, 1, severity_checker, (s,sms_message,gpio_alarm,sns))
+	s.run()	
+	
+except (KeyboardInterrupt, SystemExit):
+	destroy()
 
