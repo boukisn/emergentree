@@ -145,4 +145,7 @@ try:
 	
 except (KeyboardInterrupt, SystemExit):
 	destroy()
+	sms_message = False
+	gpio_alarm = False
+	extreme_flag = False
 
