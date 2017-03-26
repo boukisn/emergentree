@@ -28,15 +28,15 @@ def beep_three(x):
 	on()
 	time.sleep(x)
 	off()
-	time.sleep(x)
+	time.sleep(x/2.0)
 	on()
 	time.sleep(x)
 	off()
-	time.sleep(x)
+	time.sleep(x/2.0)
 	on()
 	time.sleep(x)
 	off()
-	time.sleep(x)
+	time.sleep(x/2.0)
 	
 def beep_once(x):
 	on()
@@ -98,7 +98,7 @@ def severity_checker(sc,sms_message,gpio_alarm,sns,extreme_flag):
 		if (gpio_alarm == False):
 			#Turn on the sound
 			if(extreme_flag == False):
-				beep_three(2)
+				beep_three(1.0)
 				extreme_flag = True
 			else:
 				beep_once(4)
