@@ -119,7 +119,7 @@ def severity_checker(sc,sms_message,gpio_alarm,sns,extreme_flag):
 			off()
 			gpio_alarm = False
 		
-		if(extreme_flag == True)
+		if(extreme_flag == True):
 			extreme_flag = False
 
 	else:
