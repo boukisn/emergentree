@@ -185,7 +185,7 @@ plotBands: [{ // Moderate breeze
     });
 
 	update_content();
-    var refresher = setInterval("update_content();", 5000);
+    var refresher = setInterval("update_content();", 30000);
 });
 
 function update_content(){
@@ -193,6 +193,7 @@ function update_content(){
 	update_weather();
 	update_date();
 	update_angle();
+	update_alerts();
 }
 
 function nth(d) {
@@ -391,9 +392,38 @@ function update_angle(){
 					progressBarColor: bar_color
 				});
 			}
-			
-			//$("#risk").text(output_risk);
 		}
 	}); 
 }
 
+function update_alerts(){
+    $.ajax({
+		type: "GET",
+		url: "http://127.0.0.1:5000/alerts",
+		cache: false,
+		data: { get_param: 'value' }, 
+		dataType: 'json',
+		success: function (data) { 
+			var output_array = data.info;
+			var output_html = "";
+			if(output_array.length > 0)
+			{
+				for(var i = 0; i < output_array.length; i++)
+				{
+					var type = output_array[i].type;
+					var subject = output_array[i].subject;
+					var desc = output_array[i].desc;
+
+					var style = type == "error" ? "alert" : "info";
+
+					output_html += '<div class="chip tooltipped" data-position="left" data-delay="50" data-tooltip="' + desc + '">' + subject + '<i class="icon_' + style + ' material-icons">' + type + '</i><i class="close material-icons" onclick="var tooltip_id = \'#\' + $(this).parent().attr(\'data-tooltip-id\'); $(tooltip_id).remove();">close</i></div>\n';
+				}
+			}
+
+			else
+				output_html = '<div style="font-size: 25px; font-weight: 300; color: #ccc;">No alerts at this time.</div>';
+			$("#alert_zone").html(output_html);
+			$('.tooltipped').tooltip({delay: 50});
+		}
+	}); 
+}

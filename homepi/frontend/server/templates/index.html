@@ -1,11 +1,8 @@
-
-<style>
-
-
-</style>
 <html>
 	<head>
 		<title>EmergenTree</title>
+		
+
 		<!--Import Google Icon Font-->
 		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -16,6 +13,7 @@
 		<link href="/static/css/keyboard.css" rel="stylesheet">
 		<link href="/static/css/keyboard-basic.css" rel="stylesheet">
 		<link href="/static/css/percircle.css" rel="stylesheet">
+		<link href="/static/css/please-wait.css" rel="stylesheet">
 
 		<!--Let browser know website is optimized for mobile-->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -24,6 +22,14 @@
 	</head>
 
 	<body class="light-blue lighten-5" style="max-width: 100%; overflow-x: hidden; max-height: 100%; overflow-y: hidden;">
+	<script type="text/javascript" src="/static/js/please-wait.js"></script>
+		<script type="text/javascript">
+	      window.loading_screen = window.pleaseWait({
+	        logo: "/static/images/logo.png",
+	        backgroundColor: '#64B5F6',
+	        loadingHtml: '<div style="color: white;font-size: 25px; font-weight: 100; margin-bottom: 10px;">EmergenTree is loading...</div><div class="spinner"></div>'
+	      });
+	    </script>
 		<!--Import jQuery before materialize.js-->
 		<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
 		<script type="text/javascript" src="/static/js/materialize.js"></script>
@@ -32,6 +38,7 @@
 		<script type="text/javascript" src="/static/js/jquery.keyboard.js"></script>
 		<script type="text/javascript" src="/static/js/index.js"></script>
 		<script type="text/javascript" src="/static/js/percircle.js"></script>
+		
 		
 		<nav>
 			<div class="nav-wrapper blue lighten-2">
@@ -81,42 +88,18 @@
 						
     				</div>
 
-	    			<div class="card-action">
-	    			<div class="chip tooltipped" data-position="left" data-delay="50" data-tooltip="High Wind Warning in your area.">
-						    			Weather
-					    <i class="icon_alert material-icons">error</i>
-					    <i class="close material-icons">close</i>
-					  </div>
-					  <div class="chip tooltipped" data-position="left" data-delay="50" data-tooltip="Your sensor battery is at 29%.">
-						    			Battery
-					    <i class="icon_alert material-icons">error</i>
-					    <i class="close material-icons">close</i>
-					  </div>
-					  <div class="chip tooltipped" data-position="left" data-delay="50" data-tooltip="Some random information.">
-						    			Information
-					    <i class="icon_info material-icons">info</i>
-					     <i class="close material-icons">close</i>
-					  </div>
-	    				
-	    				<!--<div style="font-size: 18px; font-weight: 300;"><i class="wi wi-wind towards-29-deg" style="font-size: 20px;"></i>&nbsp;Your tree has shifted 29 degrees.</div>-->
+	    			<div id="alert_zone" class="card-action">
 	            	</div>
 				</div>
 			</div>
 		</div>
-		<div class="tap-target" data-activates="report">
-	    <div class="tap-target-content">
-	      <h5>Title</h5>
-	      <p>A bunch of text</p>
-	    </div>
-	  </div>
 	</body>
 </html>
 <script>
 $(document).ready(function(e) {
-	$(".tap-target").tapTarget("open");
+	window.loading_screen.finish();
 	$(".close").on('click', function() {
-        var tooltip_id = "#" + $(this).parent().attr("data-tooltip-id");
-        $(tooltip_id).remove();
+        var tooltip_id = "#" + $(this).parent().attr("data-tooltip-id"); $(tooltip_id).remove();
     });
 });
 </script>
