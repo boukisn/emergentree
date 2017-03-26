@@ -6,7 +6,7 @@ import time
 import RPi.GPIO as GPIO
 
 
-Buzzer = 4 # whatever pin on the Pi
+Buzzer = 7 # whatever pin on the Pi
 home_dir = "/home/pi/emergentree/homepi/frontend/server/"
 severity_file = home_dir + "risk.config"
 settings_file = home_dir + "settings.config"
@@ -67,7 +67,7 @@ extreme_flag = False
 s = sched.scheduler(time.time, time.sleep)
 
 
-def severity_checker(sc,sms_message,gpio_alarm,sns):
+def severity_checker(sc,sms_message,gpio_alarm,sns,extreme_flag):
 
 #Do this shit every minute
 
@@ -126,7 +126,7 @@ def severity_checker(sc,sms_message,gpio_alarm,sns):
 		print "lol"
 		#turn off stuff
 
-	s.enter(5, 1, severity_checker, (sc,sms_message,gpio_alarm,sns))
+	s.enter(5, 1, severity_checker, (sc,sms_message,gpio_alarm,sns,extreme_flag))
 
 
 #Have main function that will not only set up GPIO
@@ -134,7 +134,7 @@ def severity_checker(sc,sms_message,gpio_alarm,sns):
 
 setup(Buzzer)
 try:
-	s.enter(5, 1, severity_checker, (s,sms_message,gpio_alarm,sns))
+	s.enter(5, 1, severity_checker, (s,sms_message,gpio_alarm,sns,extreme_flag))
 	s.run()	
 	
 except (KeyboardInterrupt, SystemExit):
