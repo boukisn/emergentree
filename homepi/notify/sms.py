@@ -38,7 +38,11 @@ def beep_three(x):
 	off()
 	time.sleep(x)
 	
-
+def beep_once(x):
+	on()
+	time.sleep(x)
+	off()
+	
 def destroy():
 	GPIO.output(BuzzerPin, 1)
 	GPIO.cleanup() # Release resource
