@@ -61,6 +61,7 @@ sns = boto3.client('sns')
 
 sms_message = False
 gpio_alarm = False
+extreme_flag = False
 
 s = sched.scheduler(time.time, time.sleep)
 
@@ -91,10 +92,14 @@ def severity_checker(sc,sms_message,gpio_alarm,sns):
 
 
 	if (severity_flag == "EXTREME"):
-		#do the text message
+		#do the alarm and text message
 		if (gpio_alarm == False):
 			#Turn on the sound
-			on()
+			if(extreme_flag == False):
+				beep_three(200)
+				extreme_flag = True
+			else:
+				beep_once(300)
 			gpio_alarm = True
 		if(sms_message == False):
 			sns.publish(PhoneNumber = phone_number, Message = 'EmergenTree Alert!\n\nYour tree is at EXTREME risk of potentially causing damage.')
