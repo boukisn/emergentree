@@ -50,8 +50,8 @@ def destroy():
 
 
 
-sns = boto3.client('sns',aws_access_key_id='AKIAJDUDA4LPBJRHNTXA',
-aws_secret_access_key='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')
+sns = boto3.client('sns',aws_access_key_id='...',
+aws_secret_access_key='...')
 
 #with open(sys.argv[1], "r") as ins:
 #    array = []
