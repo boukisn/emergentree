@@ -50,7 +50,7 @@ for line in tree_stats:
 	x_acc.append(float(line.split(" ")[2]))
 	y_acc.append(float(line.split(" ")[3]))
 	z_acc.append(float(line.split(" ")[4]))
-	total_acc.append(math.sqrt((x_acc[-1]^2)+(y_acc[-1]^2)+(z_acc[-1]^2)))
+	total_acc.append(math.sqrt((x_acc[-1]**2)+(y_acc[-1]**2)+(z_acc[-1]**2)))
  
 for line in wind_speeds:
 	wind.append(float(line.split(",")[4]))
