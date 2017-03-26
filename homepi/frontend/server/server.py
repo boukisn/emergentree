@@ -111,6 +111,21 @@ def tree_data():
 	f.close()
 	return "done"
 
+@app.route("/alerts")
+def alerts():
+	alerts_dir = home_dir + "alerts.config"
+	alerts_list = open(alerts_dir, 'r').readlines()
+	total_list = []
+	for line in alerts_list:
+		curr_dict = {}
+		elements = line.split(",")
+		curr_dict["type"] = elements[0]
+		curr_dict["subject"] = elements[1]
+		curr_dict["desc"] = elements[2][:-1]
+		total_list.append(curr_dict)
+	return jsonify(info=total_list)
+
+
 if __name__ == "__main__":
 	app.debug = True
 	app.run()
