@@ -39,7 +39,24 @@
 		<script type="text/javascript" src="/static/js/index.js"></script>
 		<script type="text/javascript" src="/static/js/percircle.js"></script>
 		
-		
+  <div id="modal1" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <form>
+    <h5>Phone Number</h5>
+    <p>Enter your phone number to receive notifications when your tree is at risk.</p>
+    <div class="input-field col s6">
+      <input placeholder="+15550009999" id="phone" type="text">
+    </div>
+
+    <h5>Update Battery Information</h5>
+    <p>Let us know the most recent time you recharged your battery.</p>
+     <div class="input-field col s6">
+      <input id="battery_date" type="date" class="datepicker">
+    </div>
+    <a id="save_form" class="modal-action modal-close  waves-effect waves-light btn" style="margin-top: 10px;">Save</a>
+    </form>
+    </div>
+  </div>
 		<nav>
 			<div class="nav-wrapper blue lighten-2">
 				<img src="/static/images/logo.png" style="margin-left: 0.5%; height: 100%"></img>
@@ -47,7 +64,7 @@
 				<ul id="nav-mobile" class="right hide-on-med-and-down">
 					<!--<li><input id="input_test" placeholder="Example..."></input></li>-->
 					<li><a  id="report" href="/report"><i class="material-icons">visibility</i></a></li>
-					<li><a id="settings" href="#!"><i class="material-icons">settings</i></a></li>
+					<li><a class="modal-trigger" href="#modal1" ><i class="material-icons">settings</i></a></li>
 				</ul>
 			</div>
 		</nav>
@@ -75,7 +92,7 @@
     								</span>
     							</div>
     							<p class="risk_text">
-    							Your tree is at <span id="risk" class="tooltipped" data-position="left" data-delay="50" data-tooltip="Explanation of risk."></span> of potentially causing damage.
+    							Your tree is at <span id="risk"></span> of potentially causing damage. <span id="explanation"></span>
 								</p>
 								<div id="angle_wrapper" style="margin-top: 15px; position: absolute; top: 5; right: 5;" class="tooltipped" data-position="left" data-delay="50" data-html="true" data-tooltip="Your tree has shifted by this amount."></div>
     						</div>
@@ -101,5 +118,7 @@ $(document).ready(function(e) {
 	$(".close").on('click', function() {
         var tooltip_id = "#" + $(this).parent().attr("data-tooltip-id"); $(tooltip_id).remove();
     });
+    $('.modal').modal();
+    $('.datepicker').pickadate();
 });
 </script>

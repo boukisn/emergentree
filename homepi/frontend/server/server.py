@@ -41,7 +41,7 @@ def risk():
 
 	if output < 0.01:
 		base_risk = 1.0
-	elif output > 0.01 and output <= 0.02:
+	elif output >= 0.01 and output <= 0.02:
 		base_risk = 2.0
 	elif output > 0.02 and output <= 0.025:
 		base_risk = 3.0
@@ -105,7 +105,7 @@ def angle():
 @app.route('/tree_data', methods=['POST'])
 def tree_data():
 	tree_report_dir = home_dir + "tree_report.config"
-	tree_values = "leaves=" + request.args.get("leaves") + "\nbark=" + request.args.get("bark") + "\nslimy_roots=" + request.args.get("slimy_roots") + "\nopen_wounds=" + request.args.get("open_wounds") + "\nfungus=" + request.args.get("fungus") + "\nbark_cracks=" + request.args.get("bark_cracks")
+	tree_values = "leaves=" + request.args.get("leaves") + "\nbark=" + request.args.get("bark") + "\nslimy_roots=" + request.args.get("slimy_roots") + "\nopen_wounds=" + request.args.get("open_wounds") + "\nfungus=" + request.args.get("fungus") + "\nbark_cracks=" + request.args.get("bark_cracks") + "\n"
 	f = open(tree_report_dir, 'w')
 	f.write(tree_values)
 	f.close()
@@ -125,6 +125,33 @@ def alerts():
 		total_list.append(curr_dict)
 	return jsonify(info=total_list)
 
+@app.route("/alert_response", methods=['POST'])
+def alert_response():
+	alerts_dir = home_dir + "alerts.config"
+	alerts_file_read = open(alerts_dir, 'r')
+	alerts_list = alerts_file_read.readlines()
+	alerts_file_read.close()
+	alerts_list.pop(int(request.args.get("id")))
+	alerts_file_write = open(alerts_dir, 'w')
+	alerts_file_write.write(''.join(alerts_list))
+	alerts_file_write.close()
+	return "done"
+
+@app.route('/get_tree_data')
+def get_tree_data():
+	tree_report_dir = home_dir + "tree_report.config"
+	tree_file = open(tree_report_dir, 'r')
+	tree_values = tree_file.readlines()
+	fields = ["leaves","bark","slimy_roots","open_wounds","fungus","bark_cracks"]
+	tree_values_dict = {}
+	tree_values_dict["leaves"] = tree_values[0].split("=")[1][:-1];
+	tree_values_dict["bark"] = tree_values[1].split("=")[1][:-1];
+	tree_values_dict["slimy_roots"] = tree_values[2].split("=")[1][:-1];
+	tree_values_dict["open_wounds"] = tree_values[3].split("=")[1][:-1];
+	tree_values_dict["fungus"] = tree_values[4].split("=")[1][:-1];
+	tree_values_dict["bark_cracks"] = tree_values[5].split("=")[1][:-1];
+	tree_file.close()
+	return jsonify(tree_values_dict)
 
 if __name__ == "__main__":
 	app.debug = True

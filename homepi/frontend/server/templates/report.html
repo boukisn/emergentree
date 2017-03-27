@@ -61,7 +61,24 @@ img {
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 		<script type="text/javascript" src="/static/js/materialize.min.js"></script>
 		<script type="text/javascript" src="/static/js/flickity.pkgd.min.js"></script>
-		
+	<div id="modal1" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <form>
+    <h5>Phone Number</h5>
+    <p>Enter your phone number to receive notifications when your tree is at risk.</p>
+    <div class="input-field col s6">
+      <input placeholder="+15550009999" id="phone" type="text">
+    </div>
+
+    <h5>Update Battery Information</h5>
+    <p>Let us know the most recent time you recharged your battery.</p>
+     <div class="input-field col s6">
+      <input id="battery_date" type="date" class="datepicker">
+    </div>
+    <a id="save_form" class="modal-action modal-close  waves-effect waves-light btn" style="margin-top: 10px;">Save</a>
+    </form>
+    </div>
+  </div>
 		<nav>
 			<div class="nav-wrapper blue lighten-2">
 				<img src="/static/images/logo.png" style="margin-left: 0.5%; height: 100%"></img>
@@ -69,7 +86,7 @@ img {
 				<ul id="nav-mobile" class="right hide-on-med-and-down">
 					<!--<li><input id="input_test" placeholder="Example..."></input></li>-->
 					<li class="active"><a href="/report"><i class="material-icons">visibility</i></a></li>
-					<li><a href="#!"><i class="material-icons">settings</i></a></li>
+					<li><a class="modal-trigger" href="#modal1" ><i class="material-icons">settings</i></a></li>
 				</ul>
 			</div>
 		</nav>
@@ -92,32 +109,32 @@ img {
 				<h5>My tree is exhibiting signs of...</h5>
 				<form action="#">
 				    <p>
-				      <input type="checkbox" id="check1" />
+				      <input type="checkbox" id="check1"/>
 				      <label for="check1">Discolored Leaves</label>
 				    </p>
 				    <p>
 				    	
-				     <input type="checkbox" id="check2" />
+				     <input type="checkbox" id="check2"/>
 				      <label for="check2">Insect Damage</label>
 
 				    </p>
 				    <p>
-				      <input type="checkbox" id="check3" />
+				      <input type="checkbox" id="check3"/>
 				      <label for="check3">Rotten Roots</label>
 				    </p>
 				    <p>
-				     <input type="checkbox" id="check4" />
+				     <input type="checkbox" id="check4"/>
 				      <label for="check4">Openings or Soft Spots</label>
 				    </p>
 				    <p>
-				      <input type="checkbox" id="check5" />
+				      <input type="checkbox" id="check5"/>
 				      <label for="check5">Trunk Fungus</label>
 				    </p>
 				    <p>
-				      <input type="checkbox" id="check6" />
+				      <input type="checkbox" id="check6"/>
 				      <label for="check6">Bark Decay</label>
 				    </p>
-				    <a id="save_form" class="waves-effect waves-light btn" style="margin-top: 20px;">Save</a>
+				    <a id="save_form" class="waves-effect waves-light btn" style="margin-top: 20px;" href="/">Save</a>
 				  </form>
 
 
@@ -131,6 +148,7 @@ img {
 
 <script>
 $(document).ready(function(e) {
+	update();
 	$('select').material_select();
 	var $gallery = $('.main-carousel').flickity({
 	  cellAlign: 'left',
@@ -141,6 +159,9 @@ $(document).ready(function(e) {
 	  contain: false,
 	  cellSelector: '.carousel-cell'
 	});
+	$('.modal').modal();
+	$('.datepicker').pickadate();
+
 
 	var flkty = $gallery.data('flickity');
 	var titleArray = ["Discolored Leaves","Insect Damage","Rotten Roots","Openings or Soft Spots","Trunk Fungus","Bark Decay"];
@@ -177,10 +198,30 @@ $(document).ready(function(e) {
 		        console.log(checkedArray);
 		    }
 		});
-
-		Materialize.toast('Saved!', 3000);
 	});
 
 
 });
+
+function update()
+{
+    $.ajax({
+	type: "GET",
+	url: "http://127.0.0.1:5000/get_tree_data",
+	cache: false,
+	data: { get_param: 'value' }, 
+	dataType: 'json',
+	success: function (data) {
+		var checkedArray = [data.leaves, data.bark, data.slimy_roots, data.open_wounds, data.fungus, data.bark_cracks];
+
+		for(var i = 1; i <= 6; i++)
+  		{
+  			var curr_el_id = "#" + "check" + i.toString();
+  			if(checkedArray[i-1] == "1")
+  				$(curr_el_id).attr("checked","checked");
+  		}
+	}
+	}); 
+}
+
 </script>

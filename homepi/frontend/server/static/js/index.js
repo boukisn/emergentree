@@ -185,7 +185,7 @@ plotBands: [{ // Moderate breeze
     });
 
 	update_content();
-    var refresher = setInterval("update_content();", 30000);
+    var refresher = setInterval("update_content();", 5000);
 });
 
 function update_content(){
@@ -228,23 +228,29 @@ function update_risk(){
 
 			switch(output_risk) {
 			    case "EXTREME":
-			        $("#risk").attr("class","risk_value tooltipped red-text text-lighten-1");
+			        $("#risk").attr("class","risk_value red-text text-lighten-1");
+			        $("#explanation").text("Your tree is showing signs that it may fall in the immediate future. Take action immediately.");
 			        break;
 			    case "HIGH":
-			        $("#risk").attr("class","risk_value tooltipped deep-orange-text text-lighten-1");
+			        $("#risk").attr("class","risk_value deep-orange-text text-lighten-1");
+			        $("#explanation").text("Your tree is showing signs that it may fall in the near future. Check to see if your sensor is attached correctly. Taking action is advised.");
 			        break;
 			    case "MEDIUM":
-			        $("#risk").attr("class","risk_value tooltipped amber-text text-lighten-1");
+			        $("#risk").attr("class","risk_value amber-text text-lighten-1");
+			        $("#explanation").text("Your tree is showing some signs of fatigue. Keep an eye on the weather, and regularly observe the limbs of your tree.");
 			        break;
 			    case "LOW":
-			        $("#risk").attr("class","risk_value tooltipped green-text text-lighten-1");
+			        $("#risk").attr("class","risk_value green-text text-lighten-1");
+			        $("#explanation").text("Your tree is showing some signs of fatigue. Keep an eye out over the next couple of weeks.");
 			        break;
 			    case "MINIMAL":
-			        $("#risk").attr("class","risk_value tooltipped light-blue-text text-lighten-1");
+			        $("#risk").attr("class","risk_value light-blue-text text-lighten-1");
+			        $("#explanation").text("Your tree appears to be perfectly healthy.");
 			        break;
 			    default:
 			    	output_risk = "UNKNOWN"
-			        $("#risk").attr("class","risk_value tooltipped light-blue-text text-lighten-1");
+			        $("#risk").attr("class","risk_value light-blue-text text-lighten-1");
+			        $("#explanation").text("Sorry, we're not sure what has occured.");
 			        break;
 			}
 			output_risk += " RISK";
@@ -416,14 +422,30 @@ function update_alerts(){
 
 					var style = type == "error" ? "alert" : "info";
 
-					output_html += '<div class="chip tooltipped" data-position="left" data-delay="50" data-tooltip="' + desc + '">' + subject + '<i class="icon_' + style + ' material-icons">' + type + '</i><i class="close material-icons" onclick="var tooltip_id = \'#\' + $(this).parent().attr(\'data-tooltip-id\'); $(tooltip_id).remove();">close</i></div>\n';
+					output_html += '<div data-id="' + i.toString() + '" class="chip tooltipped" data-position="left" data-delay="50" data-tooltip="' + desc + '">' + subject + '<i class="icon_' + style + ' material-icons">' + type + '</i><i class="close material-icons" onclick="alert_click(this);">close</i></div>\n';
 				}
 			}
 
 			else
-				output_html = '<div style="font-size: 25px; font-weight: 300; color: #ccc;">No alerts at this time.</div>';
+				output_html = '<div style="font-size: 18px; font-weight: 300; color: #ccc;">No alerts at this time.</div>';
 			$("#alert_zone").html(output_html);
 			$('.tooltipped').tooltip({delay: 50});
 		}
 	}); 
 }
+
+function alert_click(el){
+	var tooltip_id = '#' + $(el).parent().attr('data-tooltip-id');
+	$(tooltip_id).remove();
+	var alert_url = "http://127.0.0.1:5000/alert_response?";
+	alert_url += "id=" + $(el).parent().attr("data-id");
+	$.ajax({
+	    type: 'POST',
+	    url: alert_url,
+	    success: function(msg){
+	        console.log(alert_url);
+	        update_alerts();
+	    }
+	});
+}
+
