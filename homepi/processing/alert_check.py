@@ -39,6 +39,14 @@ anglealert = anglealert.split(",")
 if float(anglealert[2]) >= 20:
 	writefile.write("WARNING,Tree Angle,Angle variance is >= 20\n")	
 
+downloadfile = open("/home/pi/emergentree/homepi/frontend/server/connection.log","r")
+errcode = ""
+for line in downloadfile:
+	errcode = line
+if errcode == "False":
+	writefile.write("WARNING,Connection,File not Available in AWS")
+
+downloadfile.close()
 writefile.close()
 anglefile.close()
 alertfile_read.close()
