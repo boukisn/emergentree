@@ -153,6 +153,26 @@ def get_tree_data():
 	tree_file.close()
 	return jsonify(tree_values_dict)
 
+@app.route('/settings', methods=['POST'])
+def settings():
+	settings_dir = home_dir + "settings.config"
+	settings_values = "+1" + request.args.get("phone") + "," + request.args.get("date")
+	f = open(settings_dir, 'w')
+	f.write(settings_values)
+	f.close()
+	return "done"
+
+@app.route('/get_settings')
+def get_settings():
+	settings_dir = home_dir + "settings.config"
+	settings_file = open(settings_dir, 'r')
+	settings_values = settings_file.readline().split(",")
+	settings_dict = {}
+	settings_dict["phone"] = settings_values[0][2:]
+	settings_dict["date"] = settings_values[1]
+	settings_file.close()
+	return jsonify(settings_dict)
+
 if __name__ == "__main__":
 	app.debug = True
 	app.run()

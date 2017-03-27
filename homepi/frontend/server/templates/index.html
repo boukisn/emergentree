@@ -45,7 +45,7 @@
     <h5>Phone Number</h5>
     <p>Enter your phone number to receive notifications when your tree is at risk.</p>
     <div class="input-field col s6">
-      <input placeholder="+15550009999" id="phone" type="text">
+      <input placeholder="1112223333" id="phone" type="text">
     </div>
 
     <h5>Update Battery Information</h5>
@@ -53,7 +53,7 @@
      <div class="input-field col s6">
       <input id="battery_date" type="date" class="datepicker">
     </div>
-    <a id="save_form" class="modal-action modal-close  waves-effect waves-light btn" style="margin-top: 10px;">Save</a>
+    <a id="save_settings" class="modal-action modal-close  waves-effect waves-light btn" style="margin-top: 10px;">Save</a>
     </form>
     </div>
   </div>
@@ -119,6 +119,46 @@ $(document).ready(function(e) {
         var tooltip_id = "#" + $(this).parent().attr("data-tooltip-id"); $(tooltip_id).remove();
     });
     $('.modal').modal();
-    $('.datepicker').pickadate();
+    var $datepicker = $('.datepicker').pickadate();
+
+    update_forms($datepicker);
+
+    $("#save_settings").on('click', function() {
+    	var picker = $datepicker.pickadate('picker');
+    	var phone = $("#phone").val();
+    	var date = picker.get('select', 'yyyy-mm-dd');
+  		var settings_url = "http://127.0.0.1:5000/settings?";
+
+  		settings_url += "phone=" + phone + "&";
+  		settings_url += "date=" + date;
+
+  		$.ajax({
+		    type: 'POST',
+		    url: settings_url,
+		    success: function(msg){
+		        console.log(settings_url);
+		    }
+		});
+
+    });
 });
+
+function update_forms(obj)
+{
+    $.ajax({
+	type: "GET",
+	url: "http://127.0.0.1:5000/get_settings",
+	cache: false,
+	data: { get_param: 'value' }, 
+	dataType: 'json',
+	success: function (data) {
+		var phone = data.phone;
+    	var date = data.date;
+    	var picker = obj.pickadate('picker');
+
+    	$("#phone").val(phone);
+		picker.set('select', date, { format: 'yyyy-mm-dd' })
+	}
+	}); 
+}
 </script>
