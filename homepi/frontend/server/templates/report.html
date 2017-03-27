@@ -221,6 +221,11 @@ $(document).ready(function(e) {
 		});
 
     });
+
+    $datepicker.pickadate('picker').on("set", function() {
+    	var picker = $datepicker.pickadate('picker');
+    	picker.close();
+    });
 });
 
 function update_forms(obj)
