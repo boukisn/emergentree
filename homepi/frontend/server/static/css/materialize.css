@@ -8609,11 +8609,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .picker__date-display {
-  text-align: center;
-  background-color: #26a69a;
-  color: #fff;
-  padding-bottom: 15px;
-  font-weight: 300;
+  display: none;
 }
 
 .picker__nav--prev:hover,
