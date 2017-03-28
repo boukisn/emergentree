@@ -3,7 +3,7 @@ var latest_value;
 
 $(document).ready(function(e) {
 
-	$('#input_test').keyboard({
+	$('#phone').keyboard({
 		layout: 'qwerty',
 		usePreview: false,
 		autoAccept: true,
@@ -76,7 +76,7 @@ $(document).ready(function(e) {
 plotBands: [{ // Moderate breeze
             from: -1,
             to: 0.01,
-            color: 'rgba(41,182,246,0.1)',
+            color: 'rgba(41,182,246,0.3)',
             label: {
                 text: 'Minimal',
                 style: {
@@ -86,7 +86,7 @@ plotBands: [{ // Moderate breeze
         }, { // Light air
             from: 0.01,
             to: 0.02,
-            color: 'rgba(102,187,106, 0.1)',
+            color: 'rgba(102,187,106, 0.3)',
             label: {
                 text: 'Low',
                 style: {
@@ -96,7 +96,7 @@ plotBands: [{ // Moderate breeze
         }, { // Light breeze
             from: 0.02,
             to: 0.025,
-            color: 'rgba(255,202,40, 0.1)',
+            color: 'rgba(255,202,40, 0.3)',
             label: {
                 text: 'Medium',
                 style: {
@@ -106,7 +106,7 @@ plotBands: [{ // Moderate breeze
         }, { // Gentle breeze
             from: 0.025,
             to: 0.03,
-            color: 'rgba(255,112,67, 0.1)',
+            color: 'rgba(255,112,67, 0.3)',
             label: {
                 text: 'High',
                 style: {
@@ -116,7 +116,7 @@ plotBands: [{ // Moderate breeze
         }, { // Moderate breeze
             from: 0.03,
             to: 1,
-            color: 'rgba(239,83,80, 0.1)',
+            color: 'rgba(239,83,80, 0.3)',
             label: {
                 text: 'Extreme',
                 style: {
@@ -127,7 +127,7 @@ plotBands: [{ // Moderate breeze
         },
         tooltip: {
             formatter: function () {
-                return '<b>' + Highcharts.dateFormat('%A', this.x) + '</b><br/><b>' + Highcharts.dateFormat('%B %e', this.x) + nth(parseInt(Highcharts.dateFormat('%e', this.x))) + Highcharts.dateFormat(', %l%p', this.x) + '</b><br/>' + Highcharts.numberFormat(this.y, 2);
+                return '<b>' + Highcharts.dateFormat('%A', this.x) + '</b><br/><b>' + Highcharts.dateFormat('%B %e', this.x) + nth(parseInt(Highcharts.dateFormat('%e', this.x))) + Highcharts.dateFormat(', %l%p', this.x) + '</b>';
             }
         },
         legend: {
@@ -229,33 +229,28 @@ function update_risk(){
 			switch(output_risk) {
 			    case "EXTREME":
 			        $("#risk").attr("class","risk_value red-text text-lighten-1");
-			        $("#explanation").text("Your tree is showing signs that it may fall in the immediate future. Take action immediately.");
 			        break;
 			    case "HIGH":
 			        $("#risk").attr("class","risk_value deep-orange-text text-lighten-1");
-			        $("#explanation").text("Your tree is showing signs that it may fall in the near future. Check to see if your sensor is attached correctly. Taking action is advised.");
 			        break;
 			    case "MEDIUM":
 			        $("#risk").attr("class","risk_value amber-text text-lighten-1");
-			        $("#explanation").text("Your tree is showing some signs of fatigue. Keep an eye on the weather, and regularly observe the limbs of your tree.");
 			        break;
 			    case "LOW":
 			        $("#risk").attr("class","risk_value green-text text-lighten-1");
-			        $("#explanation").text("Your tree is showing some signs of fatigue. Keep an eye out over the next couple of weeks.");
 			        break;
 			    case "MINIMAL":
 			        $("#risk").attr("class","risk_value light-blue-text text-lighten-1");
-			        $("#explanation").text("Your tree appears to be perfectly healthy.");
 			        break;
 			    default:
 			    	output_risk = "UNKNOWN"
 			        $("#risk").attr("class","risk_value light-blue-text text-lighten-1");
-			        $("#explanation").text("Sorry, we're not sure what has occured.");
 			        break;
 			}
 			output_risk += " RISK";
 
 			$("#risk").text(output_risk);
+			$('.tooltipped').tooltip({delay: 50, tooltip: "Your tree is showing some signs of fatigue. Keep an eye on the weather, and regularly observe the limbs of your tree."});
 		}
 	}); 
 }
@@ -422,7 +417,7 @@ function update_alerts(){
 
 					var style = type == "error" ? "alert" : "info";
 
-					output_html += '<div data-id="' + i.toString() + '" class="chip tooltipped" data-position="left" data-delay="50" data-tooltip="' + desc + '">' + subject + '<i class="icon_' + style + ' material-icons">' + type + '</i><i class="close material-icons" onclick="alert_click(this);">close</i></div>\n';
+					output_html += '<div data-id="' + i.toString() + '" class="chip tooltipped" data-position="left" data-delay="50" data-tooltip="' + desc + '">' + subject + '<i class="close material-icons" onclick="alert_click(this);">close</i></div>\n';
 				}
 			}
 

@@ -5513,10 +5513,10 @@ button.btn-floating {
   right: 0;
   background-color: #fafafa;
   padding: 0;
-  max-height: 70%;
-  width: 55%;
+  max-height: 100%;
+  width: 60%;
   margin: auto;
-  overflow-y: auto;
+  overflow-y: hidden !important;
   border-radius: 2px;
   will-change: top, opacity;
 }
@@ -8202,7 +8202,7 @@ input[type=range]:focus::-ms-fill-upper {
  */
 .picker__frame {
   position: absolute;
-  margin: 0 auto;
+  margin: auto;
   min-width: 256px;
   width: 300px;
   max-height: 350px;
@@ -8301,8 +8301,9 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .picker__frame {
-  margin: 0 auto;
+  margin: auto;
   max-width: 325px;
+  margin-top: 50px;
 }
 
 @media (min-height: 38.875em) {

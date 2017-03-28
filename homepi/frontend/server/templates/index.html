@@ -36,7 +36,7 @@
 		<script type="text/javascript" src="/static/js/index.js"></script>
 		<script type="text/javascript" src="/static/js/percircle.js"></script>
 		
-  <div id="modal1" class="modal modal-fixed-footer">
+  <div id="modal1" class="modal">
     <div class="modal-content">
       <form>
     <h5>Phone Number</h5>
@@ -91,7 +91,7 @@
     							<p class="risk_text">
     							Your tree is at <span id="risk"></span> of potentially causing damage. <span id="explanation"></span>
 								</p>
-								<div id="angle_wrapper" style="margin-top: 15px; position: absolute; top: 5; right: 5;" class="tooltipped" data-position="left" data-delay="50" data-html="true" data-tooltip="Your tree has shifted by this amount."></div>
+								<div id="angle_wrapper" style="margin-top: 15px; position: absolute; top: 5; right: 5;"></div>
     						</div>
     					</div>
     					
@@ -115,7 +115,10 @@ $(document).ready(function(e) {
 	$(".close").on('click', function() {
         var tooltip_id = "#" + $(this).parent().attr("data-tooltip-id"); $(tooltip_id).remove();
     });
-    $('.modal').modal();
+    $('.modal').modal({
+    	startingTop: '5%',
+    	endingTop: '5%'
+    });
     var $datepicker = $('.datepicker').pickadate();
 
     update_forms($datepicker);

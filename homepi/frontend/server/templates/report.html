@@ -54,6 +54,8 @@ img {
 
 		<link type="text/css" rel="stylesheet" href="/static/css/index.css"  media="screen,projection"/>
 		<link rel="stylesheet" href="/static/css/flickity.css" media="screen">
+		<link href="/static/css/keyboard.css" rel="stylesheet">
+		<link href="/static/css/keyboard-basic.css" rel="stylesheet">
 	</head>
 
 	<body class="light-blue lighten-5">
@@ -61,7 +63,8 @@ img {
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 		<script type="text/javascript" src="/static/js/materialize.min.js"></script>
 		<script type="text/javascript" src="/static/js/flickity.pkgd.min.js"></script>
-	<div id="modal1" class="modal modal-fixed-footer">
+		<script type="text/javascript" src="/static/js/jquery.keyboard.js"></script>
+	<div id="modal1" class="modal">
     <div class="modal-content">
       <form>
     <h5>Phone Number</h5>
@@ -148,6 +151,14 @@ img {
 
 <script>
 $(document).ready(function(e) {
+	$('#phone').keyboard({
+		layout: 'qwerty',
+		usePreview: false,
+		autoAccept: true,
+		display : {
+    		'bksp': 'Delete'
+		}
+	});
 	$('select').material_select();
 	var $gallery = $('.main-carousel').flickity({
 	  cellAlign: 'left',
@@ -158,7 +169,10 @@ $(document).ready(function(e) {
 	  contain: false,
 	  cellSelector: '.carousel-cell'
 	});
-	$('.modal').modal();
+	$('.modal').modal({
+    	startingTop: '5%',
+    	endingTop: '5%'
+    });
 	$('.datepicker').pickadate();
 
 
