@@ -4,7 +4,9 @@ import os
 app = Flask(__name__)
 
 alerts = {"HUW":{"desc":"Hurricane Warning","mult": 5.0}, "TOR":{"desc":"Tornado Warning","mult": 5.0}, "EWW":{"desc":"Extreme Wind Warning","mult": 5.0}, "EQW":{"desc":"Earthquake Warning","mult": 5.0}, "FRW":{"desc":"Fire Warning","mult": 5.0}, "TSW":{"desc":"Tsunami Warning","mult": 5.0}, "HUA":{"desc":"Hurricane Watch","mult": 1.5}, "TOA":{"desc":"Tornado Watch","mult": 1.5}, "TSA":{"desc":"Tsunami Watch","mult": 1.5}, "SVR":{"desc":"Severe Thunderstorm Warning","mult": 1.5}, "TRW":{"desc":"Tropical Storm Warning","mult": 1.5}, "HWW":{"desc":"High Wind Warning","mult": 1.5}, "BZW":{"desc":"Blizzard Warning","mult": 1.5}, "SVA":{"desc":"Severe Thunderstorm Watch","mult": 1.3}, "TRA":{"desc":"Tropical Storm Watch","mult": 1.3}, "HWA":{"desc":"High Wind Watch","mult": 1.3}, "WSW":{"desc":"Winter Storm Warning","mult": 1.2}, "CFW":{"desc":"Coastal Flood Warning","mult": 1.2}, "FLW":{"desc":"Flood Warning","mult": 1.2}, "WSA":{"desc":"Winter Storm Watch","mult": 1.1}, "CFA":{"desc":"Coastal Flood Watch","mult": 1.1}, "FLA":{"desc":"Flood Watch","mult": 1.1}}
-home_dir = "/home/pi/emergentree/homepi/frontend/server/"
+root_dir = "/home/pi/emergentree/"
+home_dir = root_dir + "homepi/frontend/server/"
+root_weather_dir = root_dir + "homepi/weather/"
 
 # For cache busting
 @app.context_processor
@@ -30,7 +32,7 @@ def report():
 
 @app.route("/risk")
 def risk():
-	weather_dir = home_dir + "weather.config"
+	weather_dir = root_weather_dir + "advisories.log"
 	risk_dir = home_dir + "risk.config"
 	weather_info = open(weather_dir, 'r').readline().split(",")
 	output_file = open(risk_dir, 'r')
@@ -53,6 +55,7 @@ def risk():
 	risk_float = base_risk
 	reasons = []
 
+	"""
 	if len(weather_info) > 5:
 		max_mult = 0.0
 		for alert in weather_info[5:]:
@@ -61,6 +64,9 @@ def risk():
 				max_mult = curr_mult
 			reasons.append(alerts[alert]["desc"])
 		risk_float = risk_float * max_mult
+	"""
+	if len(weather_info) == 2:
+		risk_float = risk_float * alerts[weather_info[0]]["mult"]
 
 	risk = ""
 
