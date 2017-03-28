@@ -65,10 +65,4 @@ config.write(str(a[0]))
 output_float = str(a[0]) + "\n"
 output.write(output_float)
 
-print
-print "Standard deviation increase per 6 hours:  " + str(a[0])
-print "Standard deviation increase per day:      " + str(a[0]*4)
-print "Standard deviation increase per week:     " + str(a[0]*4*7)
-print
-
 

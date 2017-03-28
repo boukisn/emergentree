@@ -1,34 +1,28 @@
-#!/bin/bash
-TODAY=$(date +%Y_%m_%d)
+
 YESTERDAY=$(date +%Y:%m:%d -d "yesterday")
-
-HOUR=$(date +%H)
+SEC=$(date +%S)
+DATE=$(date +%m_%d_%H_)
 MIN=$(date +%M)
-LOG='.log'
+PAST=$(expr $MIN - 1)
+LOG=.log
+echo $PAST
 HOME_DIR='/home/pi/emergentree/homepi'
-
-if [ "$HOUR" -ge 0 ] && [ "$HOUR" -lt 6 ]; then
-	DATE=$YESTERDAY
-	QUARTER='4'
-elif [ "$HOUR" -ge 6 ] && [ "$HOUR" -lt 12 ]; then
-	DATE=$TODAY
-	QUARTER='1'
-elif [ "$HOUR" -ge 12 ] && [ "$HOUR" -lt 18 ]; then
-	DATE=$TODAY
-	QUARTER='2'
-elif [ "$HOUR" -ge 18 ] && [ "$HOUR" -le 23 ]; then
-	DATE=$TODAY
-	QUARTER='3'
+if [ $PAST -lt 10 ]; then
+	PAST=0$PAST
 fi
+	
+echo sensor_$DATE$PAST$LOG 
+if [ $SEC -lt 30 ]; then
 
-# Download sensor data
-python download.py sensor_$DATE_$QUARTER$LOG $HOME_DIR/warehouse/sensor_$DATE_$QUARTER$LOG
+	# Download sensor data
+	sudo python $HOME_DIR/backend/download.py sensor_$DATE$PAST$LOG $HOME_DIR/warehouse/sensor_$DATE$PAST$LOG
+	sudo chown pi:pi $HOME_DIR/warehouse/sensor_$DATE$PAST$LOG
+	# Log wind speed vs. acceleration
+	python $HOME_DIR/processing/slope_test.py $HOME_DIR/warehouse/sensor_$DATE$PAST$LOG $HOME_DIR/warehouse/wind$LOG $HOME_DIR/warehouse/output_slopes.log
 
-# Log wind speed vs. acceleration
-python $HOME_DIR/processing/slope_test.py $HOME_DIR/warehouse/sensor_$DATE_$QUARTER$LOG $HOME_DIR/warehouse/wind_$DATE_$QUARTER$LOG $HOME_DIR/warehouse/output_slopes.log
+	# Calculate 1st regression
+	sudo python $HOME_DIR/processing/regression.py $HOME_DIR/warehouse/output_slopes.log $HOME_DIR/warehouse/regress.log
 
-# Calculate 1st regression
-python regression.py $HOME_DIR/warehouse/output_slopes.log $HOME_DIR/warehouse/regress.log
-
-# Calculate 2nd regression
-python $HOME_DIR/processing/standard.py $HOME_DIR/warehouse/regress.log $HOME_DIR/frontend/server/risk.config
+	# Calculate 2nd regression
+	sudo python $HOME_DIR/processing/standard.py $HOME_DIR/warehouse/regress.log $HOME_DIR/frontend/server/risk.config
+fi

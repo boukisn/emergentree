@@ -34,8 +34,6 @@ $(document).ready(function(e) {
                     setInterval(function () {
                     	var hour = (new Date).getHours();
                     	var minute = (new Date).getMinutes();
-                    	if((hour == 0 || hour == 6 || hour == 12 || hour == 18) && minute == 30)
-                    	{
 		                    $.ajax({
 								type: "GET",
 								url: "http://127.0.0.1:5000/data",
@@ -50,7 +48,6 @@ $(document).ready(function(e) {
 	                        var x = (new Date()).getTime(), // current time
 	                            y = latest_value;
 	                        series.addPoint([x, y], true, true);
-                    	}
                     }, 60000);
                 }
             },

@@ -35,7 +35,7 @@ if os.path.exists(filename):
 	avgx = float(numpy.mean(anglesx))
 	avgy = float(numpy.mean(anglesy))
 	variance = abs(numpy.mean((float(currangles.split(",")[0]) - avgx) + (float(currangles.split(",")[1]) - avgy)))
-	f.write(currangles.split(",")[0]+","+currangles.split(",")[1]+","+str(variance))
+	f.write(currangles.split(",")[0]+","+currangles.split(",")[1]+","+str(int(round(variance))))
 	f.close()
 
 else:
@@ -46,6 +46,8 @@ else:
 	file_name.write(str(numpy.mean(anglesx))+","+str(numpy.mean(anglesy))+","+"0")
 	file_name.close()
 
+tree_stats.seek(0)
+
 for line in tree_stats:
 	x_acc.append(float(line.split(" ")[2]))
 	y_acc.append(float(line.split(" ")[3]))
@@ -53,7 +55,7 @@ for line in tree_stats:
 	total_acc.append(math.sqrt((x_acc[-1]**2)+(y_acc[-1]**2)+(z_acc[-1]**2)))
  
 for line in wind_speeds:
-	wind.append(float(line.split(",")[4]))
+	wind.append(float(line))
 
 avg_var.write(str(numpy.mean(total_acc)) +' ' + str(numpy.mean(wind)) +'\n') 
 print
