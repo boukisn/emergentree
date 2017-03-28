@@ -49,7 +49,8 @@ def destroy():
 	GPIO.cleanup() # Release resource
 
 
-
+#Add these manually :/
+#Or else Amazon will call you out
 sns = boto3.client('sns',aws_access_key_id='...',
 aws_secret_access_key='...')
 
@@ -103,34 +104,30 @@ def severity_checker(sc,sms_message,gpio_alarm,sns,extreme_flag):
 #			else:
 #				beep_once(4)
 			gpio_alarm = True
-		if(sms_message == False):
+#		if(sms_message == False):
 			sns.publish(PhoneNumber = phone_number, Message = 'EmergenTree Alert!\n\nYour tree is at EXTREME risk of potentially causing damage.')
 			sms_message = True	
 		
 		print "FUCK!"
 
 	elif (severity_flag == "HIGH"):
-		#do the text message
-		if(sms_message == False):
-			sns.publish(PhoneNumber = phone_number, Message = 'EmergenTree Alert!\n\nYour tree is at HIGH risk of potentially causing damage.')
-			sms_message = True
-			print "lol"
-		#should probably turn on the alarm if its going	
-		if(gpio_alarm == True):
-			off()
-			gpio_alarm = False
-		
 		if(extreme_flag == True):
 			extreme_flag = False
-
+		#do the text message
+		#Going from extreme to high....
+		if(sms_message == False or extreme_flag = False):
+			sns.publish(PhoneNumber = phone_number, Message = 'EmergenTree Alert!\n\nYour tree is at HIGH risk of potentially causing damage.')
+			sms_message = True
+			print "lol"	
+		#should probably turn on the alarm if its going	
+		if(gpio_alarm == True):
+			gpio_alarm = False
 	else:
 		#Turn off the settings
 		sms_message = False
 		gpio_alarm = False
 		extreme_flag = False
-		off()
-		print "lol"
-		#turn off stuff
+		print "yeee"
 
 	s.enter(5, 1, severity_checker, (sc,sms_message,gpio_alarm,sns,extreme_flag))
 
