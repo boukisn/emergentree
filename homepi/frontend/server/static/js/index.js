@@ -124,7 +124,7 @@ plotBands: [{ // Moderate breeze
         },
         tooltip: {
             formatter: function () {
-                return '<b>' + Highcharts.dateFormat('%A', this.x) + '</b><br/><b>' + Highcharts.dateFormat('%B %e', this.x) + nth(parseInt(Highcharts.dateFormat('%e', this.x))) + Highcharts.dateFormat(', %l%p', this.x) + '</b>';
+                return '<b>' + Highcharts.dateFormat('%A', this.x) + '</b><br/><b>' + Highcharts.dateFormat('%B %e', this.x) + nth(parseInt(Highcharts.dateFormat('%e', this.x))) + Highcharts.dateFormat(', %l:%M%p', this.x) + '</b>';
             }
         },
         legend: {
@@ -153,8 +153,11 @@ plotBands: [{ // Moderate breeze
 					async: false
 				});
 
-				var now = new Date((new Date()).setMinutes(0));
+				//var now = new Date((new Date()).setMinutes(0));
 
+				var now = new Date();
+
+				/*
 				var quarter = Math.floor((now.getHours())/6) + 1;
 				if(quarter == 1)
 					now = new Date(now.setHours(0));
@@ -164,7 +167,7 @@ plotBands: [{ // Moderate breeze
 					now = new Date(now.setHours(12));
 				else if(quarter == 4)
 					now = new Date(now.setHours(18));
-
+				*/
 				var x_time = now;
 				
                 for (i = (ajax_data.length - 1); i >= 0; i -= 1) {
@@ -172,7 +175,7 @@ plotBands: [{ // Moderate breeze
                         x: x_time.getTime(),
                         y: parseFloat(ajax_data[i])
                     });
-                    x_time.setHours(x_time.getHours() - 6);
+                    x_time.setMinutes(x_time.getMinutes() - 1);
                 }
 
                 return data.reverse();
@@ -182,7 +185,7 @@ plotBands: [{ // Moderate breeze
     });
 
 	update_content();
-    var refresher = setInterval("update_content();", 5000);
+    var refresher = setInterval("update_content();", 30000);
 });
 
 function update_content(){
@@ -414,7 +417,7 @@ function update_alerts(){
 
 					var style = type == "error" ? "alert" : "info";
 
-					output_html += '<div data-id="' + i.toString() + '" class="chip tooltipped" data-position="left" data-delay="50" data-tooltip="' + desc + '">' + subject + '<i class="close material-icons" onclick="alert_click(this);">close</i></div>\n';
+					output_html += '<div data-id="' + i.toString() + '" class="chip tooltipped" data-position="left" data-delay="50" data-tooltip="' + desc + '">' + subject + '<i class="icon_' + style + ' material-icons">' + type + '</i></div>\n';
 				}
 			}
 
