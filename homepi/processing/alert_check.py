@@ -38,7 +38,7 @@ for line in anglefile:
 	anglealert = line
 anglealert = anglealert.split(",")
 if float(anglealert[2]) >= 20:
-	writefile.write("WARNING,Tree Angle,Angle variance is >= 20\n")	
+	writefile.write("WARNING,Tree Angle,Your branch has shifted by a large amount\n")	
 
 downloadfile = open("/home/pi/emergentree/homepi/frontend/server/connection.log","r")
 errcode = ""
