@@ -119,7 +119,7 @@ def severity_checker(sc,sms_message,gpio_alarm,sns,extreme_flag):
 			sns.publish(PhoneNumber = phone_number, Message = 'EmergenTree Alert!\n\nYour tree is at HIGH risk of potentially causing damage.')
 			sms_message = True
 			print "lol"	
-		#should probably turn on the alarm if its going	
+		#should probably let the alarm go if its already triggered	
 		if(gpio_alarm == True):
 			gpio_alarm = False
 	else:
@@ -129,7 +129,7 @@ def severity_checker(sc,sms_message,gpio_alarm,sns,extreme_flag):
 		extreme_flag = False
 		print "yeee"
 
-	s.enter(5, 1, severity_checker, (sc,sms_message,gpio_alarm,sns,extreme_flag))
+	s.enter(60, 1, severity_checker, (sc,sms_message,gpio_alarm,sns,extreme_flag))
 
 
 #Have main function that will not only set up GPIO
@@ -137,7 +137,7 @@ def severity_checker(sc,sms_message,gpio_alarm,sns,extreme_flag):
 
 setup(Buzzer)
 try:
-	s.enter(5, 1, severity_checker, (s,sms_message,gpio_alarm,sns,extreme_flag))
+	s.enter(60, 1, severity_checker, (s,sms_message,gpio_alarm,sns,extreme_flag))
 	s.run()	
 	
 except (KeyboardInterrupt, SystemExit):
