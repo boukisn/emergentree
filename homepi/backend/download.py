@@ -17,13 +17,14 @@ file_to_download = sys.argv[1]
 # print 'Argument List:', str(sys.argv)
 # print sys.argv[1]
 
-s3.Bucket('buteamfourteen').download_file(file_to_download, sys.argv[2])
-print sys.argv[2]
-writefile = open("/home/pi/emergentree/homepi/frontend/server/connection.log","w+")
-writefile.write("True")
-writefile.close()
-"""except:
+try:
+	s3.Bucket('buteamfourteen').download_file(file_to_download, sys.argv[2])
+	writefile = open("/home/pi/emergentree/homepi/frontend/server/connection.log","w+")
+	writefile.write("True")
+	writefile.close()
+
+except:
 	writefile = open("/home/pi/emergentree/homepi/frontend/server/connection.log","w+")
 	writefile.write("False")
-	writefile.close()"""
+	writefile.close()
 
