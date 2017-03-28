@@ -12,7 +12,7 @@ if os.path.exists(filename):
 	now2 = datetime.datetime.strptime(oldTime, "%Y-%m-%d")
 	delta = (datetime.datetime.now() - now2)
 	if delta.seconds // 3600 + delta.days*24 > 90:
-		writefile.write("WARNING,Battery,Your Battery is going to die soon\n")
+		writefile.write("info,Battery,Please recharge your battery\n")
 	f.close()
 
 # else:
@@ -30,7 +30,7 @@ else:
 	for line in alertfile_read:
 		warning = line
 	my_list = warning.split(",")
-	writefile.write("WARNING,Weather Alert,"+my_list[1]+"\n")
+	writefile.write("error,Weather Alert,"+my_list[1]+" detected\n")
 
 anglefile = open("/home/pi/emergentree/homepi/frontend/server/angle.config","r")
 anglealert=""
@@ -38,14 +38,14 @@ for line in anglefile:
 	anglealert = line
 anglealert = anglealert.split(",")
 if float(anglealert[2]) >= 20:
-	writefile.write("WARNING,Tree Angle,Your branch has shifted by a large amount\n")	
+	writefile.write("error,Tree Angle,Your branch has shifted by a large amount\n")	
 
 downloadfile = open("/home/pi/emergentree/homepi/frontend/server/connection.log","r")
 errcode = ""
 for line in downloadfile:
 	errcode = line
 if errcode == "False":
-	writefile.write("WARNING,Connection,File not Available in AWS")
+	writefile.write("info,Connection,Check your internet connection")
 
 downloadfile.close()
 writefile.close()
