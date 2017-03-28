@@ -2,23 +2,24 @@ import sys
 import os.path
 import datetime
 
-filename = "/home/pi/emergentree/homepi/frontend/server/timer.log"
+filename = "/home/pi/emergentree/homepi/frontend/server/settings.config"
 writefile = open("/home/pi/emergentree/homepi/frontend/server/alerts.config","w+")
 if os.path.exists(filename):
 	f = open(filename,"r")
 	for line in f:
-		now = line
-	now2 = datetime.datetime.strptime(now, "%Y-%m-%d %H:%M:%S.%f")
+		oldTime = line
+	oldTime = oldTime.split(",")[1]
+	now2 = datetime.datetime.strptime(oldTime, "%Y-%m-%d")
 	delta = (datetime.datetime.now() - now2)
 	if delta.seconds // 3600 + delta.days*24 > 90:
 		writefile.write("WARNING,Battery,Your Battery is going to die soon\n")
 	f.close()
 
-else:
-	f = open(filename,"w+")
-	now = datetime.datetime.now()
-	f.write(str(now))
-	f.close()
+# else:
+# 	f = open(filename,"w+")
+# 	now = datetime.datetime.now()
+# 	f.write(str(now))
+# 	f.close()
 	
 alertfile ="/home/pi/emergentree/homepi/weather/advisories.log"
 alertfile_read = open(alertfile,"r")
