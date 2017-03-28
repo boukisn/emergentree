@@ -51,8 +51,10 @@ def destroy():
 
 #Add these manually :/
 #Or else Amazon will call you out
-sns = boto3.client('sns',aws_access_key_id='...',
-aws_secret_access_key='...')
+#sns = boto3.client('sns',aws_access_key_id='...',
+#aws_secret_access_key='...')
+
+sns = boto3.client('sns')
 
 #with open(sys.argv[1], "r") as ins:
 #    array = []
