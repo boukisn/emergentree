@@ -117,7 +117,7 @@ def severity_checker(sc,sms_message,gpio_alarm,sns,extreme_flag):
 			extreme_flag = False
 		#do the text message
 		#Going from extreme to high....
-		if(sms_message == False or extreme_flag = False):
+		if(sms_message == False or extreme_flag == False):
 			sns.publish(PhoneNumber = phone_number, Message = 'EmergenTree Alert!\n\nYour tree is at HIGH risk of potentially causing damage.')
 			sms_message = True
 			print "lol"	
