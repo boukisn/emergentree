@@ -103,73 +103,74 @@ def severity_checker(s, extreme_flag, high_flag, sms_message, gpio_alarm, last, 
 	phone_number = phone_configuration_array[0]
 
 	alert_type = ""
+	try:
+		# State machine
+		if (last != "EXTREME" and last != "HIGH") and (severity_flag == "EXTREME"):
+			extreme_flag = True
+			high_flag = False
+			sms_message = True
+			gpio_alarm = True
+			alert_type = "EXTREME"
+			last = severity_flag
+		elif (last != "EXTREME" and last != "HIGH") and (severity_flag == "HIGH"):
+			extreme_flag = False
+			high_flag = True
+			sms_message = True
+			gpio_alarm = False
+			alert_type = "HIGH"
+			last = severity_flag
+		elif (last != "EXTREME" and last != "HIGH") and (severity_flag != "EXTREME" and severity_flag != "HIGH"):
+			extreme_flag = False
+			high_flag = False
+			sms_message = False
+			gpio_alarm = False
+			last = severity_flag
+		elif (last == "EXTREME") and (severity_flag == "EXTREME"):
+			extreme_flag = True
+			high_flag = False
+			sms_message = False
+			gpio_alarm = False
+			last = severity_flag
+		elif (last == "EXTREME") and (severity_flag == "HIGH"):
+			extreme_flag = False
+			high_flag = True
+			sms_message = True
+			gpio_alarm = False
+			alert_type = "HIGH"
+			last = severity_flag
+		elif (last == "EXTREME") and (severity_flag != "EXTREME" and severity_flag != "HIGH"):
+			extreme_flag = False
+			high_flag = False
+			sms_message = False
+			gpio_alarm = False
+			last = severity_flag
+		elif (last == "HIGH") and (severity_flag == "EXTREME"):
+			extreme_flag = True
+			high_flag = False
+			sms_message = True
+			gpio_alarm = True
+			alert_type = "EXTREME"
+			last = severity_flag
+		elif (last == "HIGH") and (severity_flag == "HIGH"):
+			extreme_flag = False
+			high_flag = True
+			sms_message = False
+			gpio_alarm = False
+			last = severity_flag
+		elif (last == "HIGH") and (severity_flag != "EXTREME" and severity_flag != "HIGH"):
+			extreme_flag = False
+			high_flag = False
+			sms_message = False
+			gpio_alarm = False
+			last = severity_flag
 
-	# State machine
-	if (last != "EXTREME" and last != "HIGH") and (severity_flag == "EXTREME"):
-		extreme_flag = True
-		high_flag = False
-		sms_message = True
-		gpio_alarm = True
-		alert_type = "EXTREME"
-		last = severity_flag
-	elif (last != "EXTREME" and last != "HIGH") and (severity_flag == "HIGH"):
-		extreme_flag = False
-		high_flag = True
-		sms_message = True
-		gpio_alarm = False
-		alert_type = "HIGH"
-		last = severity_flag
-	elif (last != "EXTREME" and last != "HIGH") and (severity_flag != "EXTREME" and severity_flag != "HIGH"):
-		extreme_flag = False
-		high_flag = False
-		sms_message = False
-		gpio_alarm = False
-		last = severity_flag
-	elif (last == "EXTREME") and (severity_flag == "EXTREME"):
-		extreme_flag = True
-		high_flag = False
-		sms_message = False
-		gpio_alarm = False
-		last = severity_flag
-	elif (last == "EXTREME") and (severity_flag == "HIGH"):
-		extreme_flag = False
-		high_flag = True
-		sms_message = True
-		gpio_alarm = False
-		alert_type = "HIGH"
-		last = severity_flag
-	elif (last == "EXTREME") and (severity_flag != "EXTREME" and severity_flag != "HIGH"):
-		extreme_flag = False
-		high_flag = False
-		sms_message = False
-		gpio_alarm = False
-		last = severity_flag
-	elif (last == "HIGH") and (severity_flag == "EXTREME"):
-		extreme_flag = True
-		high_flag = False
-		sms_message = True
-		gpio_alarm = True
-		alert_type = "EXTREME"
-		last = severity_flag
-	elif (last == "HIGH") and (severity_flag == "HIGH"):
-		extreme_flag = False
-		high_flag = True
-		sms_message = False
-		gpio_alarm = False
-		last = severity_flag
-	elif (last == "HIGH") and (severity_flag != "EXTREME" and severity_flag != "HIGH"):
-		extreme_flag = False
-		high_flag = False
-		sms_message = False
-		gpio_alarm = False
-		last = severity_flag
-
-	print "Extreme: " + str(extreme_flag)
-	print "High: " + str(high_flag)
-	beep_three(gpio_alarm)
-	send_sms(sns, phone_number, alert_type, sms_message)
-
-	s.enter(60, 1, severity_checker, (s, extreme_flag, high_flag, sms_message, gpio_alarm, last, sns))
+		print "Extreme: " + str(extreme_flag)
+		print "High: " + str(high_flag)
+		beep_three(gpio_alarm)
+		send_sms(sns, phone_number, alert_type, sms_message)
+	except Exception as e:
+		print str(e)
+	s.enter(30, 1, severity_checker, (s, extreme_flag, high_flag, sms_message, gpio_alarm, last, sns))
 
 
 #Have main function that will not only set up GPIO
@@ -177,7 +178,7 @@ def severity_checker(s, extreme_flag, high_flag, sms_message, gpio_alarm, last, 
 
 setup(Buzzer)
 try:
-	s.enter(60, 1, severity_checker, (s, extreme_flag, high_flag, sms_message, gpio_alarm, last, sns))
+	s.enter(30, 1, severity_checker, (s, extreme_flag, high_flag, sms_message, gpio_alarm, last, sns))
 	s.run()	
 	
 except (KeyboardInterrupt, SystemExit):
