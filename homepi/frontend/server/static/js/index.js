@@ -72,50 +72,50 @@ $(document).ready(function(e) {
             },
 plotBands: [{ // Moderate breeze
             from: -1,
-            to: 0.01,
+            to: 0.005,
             color: 'rgba(41,182,246,0.3)',
             label: {
-                text: 'Minimal',
+                text: '',
                 style: {
                     color: '#606060'
                 }
             }
         }, { // Light air
-            from: 0.01,
-            to: 0.02,
+            from: 0.005,
+            to: 0.01,
             color: 'rgba(102,187,106, 0.3)',
             label: {
-                text: 'Low',
+                text: '',
                 style: {
                     color: '#606060'
                 }
             }
         }, { // Light breeze
-            from: 0.02,
-            to: 0.025,
+            from: 0.01,
+            to: 0.015,
             color: 'rgba(255,202,40, 0.3)',
             label: {
-                text: 'Medium',
+                text: '',
                 style: {
                     color: '#606060'
                 }
             }
         }, { // Gentle breeze
-            from: 0.025,
-            to: 0.03,
+            from: 0.015,
+            to: 0.02,
             color: 'rgba(255,112,67, 0.3)',
             label: {
-                text: 'High',
+                text: '',
                 style: {
                     color: '#606060'
                 }
             }
         }, { // Moderate breeze
-            from: 0.03,
+            from: 0.02,
             to: 1,
             color: 'rgba(239,83,80, 0.3)',
             label: {
-                text: 'Extreme',
+                text: '',
                 style: {
                     color: '#606060'
                 }
