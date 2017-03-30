@@ -3,22 +3,7 @@ import os
 
 app = Flask(__name__)
 
-alerts_dict={
-	"TOR":1.6837404737707237
-	"FRW":1.3 
-	"TOA":1.34187023688
-	"SVR":1.06731415302
-	"HWW":1.10526162097427432
-	"BZW":1.0705579451455787
-	"SVA":1.03365707651
-	"HWA":1.05263081048
-	"WSW":1.028944960089230676
-	"CFW":1.2661422233501
-	"FLW":1.02
-	"WSA":1.01447248004
-	"CFA":1.13307111167
-	"FLA":1.01
-}
+alerts_dict={"HUW":5.0, "EQW":5.0, "TSW":5.0, "HUA":5.0, "TSA":5.0, "TRW":5.0, "TRA":1.5, "EWW":5.0, "TOR":1.6837404737707237, "FRW":1.3, "TOA":1.34187023688, "SVR":1.06731415302, "HWW":1.10526162097427432, "BZW":1.0705579451455787, "SVA":1.03365707651, "HWA":1.05263081048, "WSW":1.028944960089230676, "CFW":1.2661422233501, "FLW":1.02, "WSA":1.01447248004, "CFA":1.13307111167, "FLA":1.01}
 
 root_dir = "/home/pi/emergentree/"
 home_dir = root_dir + "homepi/frontend/server/"
@@ -83,7 +68,7 @@ def risk():
 	"""
 
 	if len(weather_info) == 2:
-		risk_float = risk_float * alerts_dict[weather_info[0]]["mult"]
+		risk_float = risk_float * alerts_dict[weather_info[0]]
 
 	risk = ""
 
