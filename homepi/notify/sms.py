@@ -49,10 +49,10 @@ def destroy():
 	GPIO.output(BuzzerPin, 1)
 	GPIO.cleanup() # Release resource
 
-def send_sms(alert_type, flag):
+def send_sms(sns, phone, alert_type, flag):
 	if flag:
 		message = 'EmergenTree Alert!\n\nYour tree is at ' + alert_type +' risk of potentially causing damage.'
-		sns.publish(PhoneNumber = phone_number, Message = message)
+		sns.publish(PhoneNumber = phone, Message = message)
 
 #Add these manually :/
 #Or else Amazon will call you out
@@ -78,7 +78,7 @@ last = "MINIMAL"
 s = sched.scheduler(time.time, time.sleep)
 
 
-def severity_checker(sc,sms_message,gpio_alarm,sns,extreme_flag):
+def severity_checker(s, extreme_flag, high_flag, sms_message, gpio_alarm, last, sns):
 
 #Do this shit every minute
 
@@ -167,9 +167,9 @@ def severity_checker(sc,sms_message,gpio_alarm,sns,extreme_flag):
 	print "Extreme: " + extreme_flag
 	print "High: " + high_flag
 	beep_three(gpio_alarm)
-	send_sms(alert_type, sms_message)
+	send_sms(sns, phone_number, alert_type, sms_message)
 
-	s.enter(60, 1, severity_checker, (sc,sms_message,gpio_alarm,sns,extreme_flag))
+	s.enter(60, 1, severity_checker, (s, extreme_flag, high_flag, sms_message, gpio_alarm, last, sns))
 
 
 #Have main function that will not only set up GPIO
@@ -177,7 +177,7 @@ def severity_checker(sc,sms_message,gpio_alarm,sns,extreme_flag):
 
 setup(Buzzer)
 try:
-	s.enter(60, 1, severity_checker, (s,sms_message,gpio_alarm,sns,extreme_flag))
+	s.enter(60, 1, severity_checker, (s, extreme_flag, high_flag, sms_message, gpio_alarm, last, sns))
 	s.run()	
 	
 except (KeyboardInterrupt, SystemExit):
