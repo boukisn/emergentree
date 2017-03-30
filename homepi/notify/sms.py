@@ -8,7 +8,7 @@ import RPi.GPIO as GPIO
 
 Buzzer = 7 # whatever pin on the Pi
 home_dir = "/home/pi/emergentree/homepi/frontend/server/"
-severity_file = home_dir + "risk.config"
+severity_file = home_dir + "risk_value.config"
 settings_file = home_dir + "settings.config"
 
 def setup(pin):

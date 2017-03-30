@@ -35,6 +35,7 @@ def report():
 def risk():
 	weather_dir = root_weather_dir + "advisories.log"
 	risk_dir = home_dir + "risk.config"
+	risk_value_dir = home_dir + "risk_value.config"
 	weather_info = open(weather_dir, 'r').readline().split(",")
 	output_file = open(risk_dir, 'r')
 	output = float(output_file.readline().split(",")[0])
@@ -83,8 +84,8 @@ def risk():
 	elif risk_float >= 5.0:
 		risk = "EXTREME"
 
-	output_file_again = open(risk_dir, 'w')
-	output_file_write_string = str(output) + "," + risk
+	output_file_again = open(risk_value_dir, 'w')
+	output_file_write_string = risk
 	output_file_again.write(output_file_write_string)
 
 	return jsonify(risk=risk,reasons=reasons)
