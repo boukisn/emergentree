@@ -48,7 +48,7 @@ $(document).ready(function(e) {
 	                        var x = (new Date()).getTime(), // current time
 	                            y = latest_value;
 	                        series.addPoint([x, y], true, true);
-                    }, 60000);
+                    }, 30000);
                 }
             },
             height: 350
