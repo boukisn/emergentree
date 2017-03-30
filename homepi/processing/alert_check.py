@@ -45,7 +45,7 @@ errcode = ""
 for line in downloadfile:
 	errcode = line
 if errcode == "False":
-	writefile.write("info,Connection,Check your internet connection")
+	writefile.write("info,Connection,Check your internet connection\n")
 
 downloadfile.close()
 writefile.close()
