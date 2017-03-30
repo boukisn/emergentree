@@ -72,7 +72,7 @@ $(document).ready(function(e) {
             },
 plotBands: [{ // Moderate breeze
             from: -1,
-            to: 0.005,
+            to: 0.0125,
             color: 'rgba(41,182,246,0.3)',
             label: {
                 text: '',
@@ -81,8 +81,8 @@ plotBands: [{ // Moderate breeze
                 }
             }
         }, { // Light air
-            from: 0.005,
-            to: 0.01,
+            from: 0.0125,
+            to: 0.025,
             color: 'rgba(102,187,106, 0.3)',
             label: {
                 text: '',
@@ -91,8 +91,8 @@ plotBands: [{ // Moderate breeze
                 }
             }
         }, { // Light breeze
-            from: 0.01,
-            to: 0.015,
+            from: 0.025,
+            to: 0.0375,
             color: 'rgba(255,202,40, 0.3)',
             label: {
                 text: '',
@@ -101,8 +101,8 @@ plotBands: [{ // Moderate breeze
                 }
             }
         }, { // Gentle breeze
-            from: 0.015,
-            to: 0.02,
+            from: 0.0375,
+            to: 0.05,
             color: 'rgba(255,112,67, 0.3)',
             label: {
                 text: '',
@@ -111,7 +111,7 @@ plotBands: [{ // Moderate breeze
                 }
             }
         }, { // Moderate breeze
-            from: 0.02,
+            from: 0.05,
             to: 1,
             color: 'rgba(239,83,80, 0.3)',
             label: {

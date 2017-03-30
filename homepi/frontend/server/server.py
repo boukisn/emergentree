@@ -43,15 +43,15 @@ def risk():
 	
 	base_risk = 0.0
 
-	if output < 0.005:
+	if output < 0.0125:
 		base_risk = 1.0
-	elif output >= 0.005 and output <= 0.010:
+	elif output >= 0.0125 and output <= 0.025:
 		base_risk = 2.0
-	elif output > 0.010 and output <= 0.015:
+	elif output > 0.025 and output <= 0.0375:
 		base_risk = 3.0
-	elif output > 0.015 and output <= 0.02:
+	elif output > 0.0375 and output <= 0.05:
 		base_risk = 4.0
-	elif output > 0.02:
+	elif output > 0.05:
 		base_risk = 5.0
 
 	risk_float = base_risk
