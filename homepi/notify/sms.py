@@ -24,19 +24,20 @@ def on():
 def off():
 	GPIO.output(BuzzerPin, 1)
 	
-def beep_three(x):
-	on()
-	time.sleep(x)
-	off()
-	time.sleep(x/2.0)
-	on()
-	time.sleep(x)
-	off()
-	time.sleep(x/2.0)
-	on()
-	time.sleep(x)
-	off()
-	time.sleep(x/2.0)
+def beep_three(flag):
+	if flag:
+		on()
+		time.sleep(1.0)
+		off()
+		time.sleep(1.0/2.0)
+		on()
+		time.sleep(1.0)
+		off()
+		time.sleep(1.0/2.0)
+		on()
+		time.sleep(1.0)
+		off()
+		time.sleep(1.0/2.0)
 	
 def beep_once(x):
 	on()
@@ -48,6 +49,10 @@ def destroy():
 	GPIO.output(BuzzerPin, 1)
 	GPIO.cleanup() # Release resource
 
+def send_sms(alert_type, flag):
+	if flag:
+		message = 'EmergenTree Alert!\n\nYour tree is at ' + alert_type +' risk of potentially causing damage.'
+		sns.publish(PhoneNumber = phone_number, Message = message)
 
 #Add these manually :/
 #Or else Amazon will call you out
@@ -64,9 +69,11 @@ sns = boto3.client('sns')
 #number = array[0]
 #message = array[1]
 
+extreme_flag = False
+high_flag = False
 sms_message = False
 gpio_alarm = False
-extreme_flag = False
+last = "MINIMAL"
 
 s = sched.scheduler(time.time, time.sleep)
 
@@ -95,41 +102,72 @@ def severity_checker(sc,sms_message,gpio_alarm,sns,extreme_flag):
 	phone_configuration_array = [x for x in pattern_2.split(phone_configuration_info) if x]
 	phone_number = phone_configuration_array[0]
 
+	alert_type = ""
 
-	if (severity_flag == "EXTREME"):
-		#do the alarm and text message
-		if (gpio_alarm == False):
-			#Turn on the sound
-			if(extreme_flag == False):
-				beep_three(1.0)
-				extreme_flag = True
-#			else:
-#				beep_once(4)
-			gpio_alarm = True
-#		if(sms_message == False):
-			sns.publish(PhoneNumber = phone_number, Message = 'EmergenTree Alert!\n\nYour tree is at EXTREME risk of potentially causing damage.')
-			sms_message = True	
-		
-		print "FUCK!"
-
-	elif (severity_flag == "HIGH"):
-		if(extreme_flag == True):
-			extreme_flag = False
-		#do the text message
-		#Going from extreme to high....
-		if(sms_message == False or extreme_flag == False):
-			sns.publish(PhoneNumber = phone_number, Message = 'EmergenTree Alert!\n\nYour tree is at HIGH risk of potentially causing damage.')
-			sms_message = True
-			print "lol"	
-		#should probably let the alarm go if its already triggered	
-		if(gpio_alarm == True):
-			gpio_alarm = False
-	else:
-		#Turn off the settings
+	# State machine
+	if (last != "EXTREME" and last != "HIGH") and (severity_flag == "EXTREME"):
+		extreme_flag = True
+		high_flag = False
+		sms_message = True
+		gpio_alarm = True
+		alert_type = "EXTREME"
+		last = severity_flag
+	elif (last != "EXTREME" and last != "HIGH") and (severity_flag == "HIGH"):
+		extreme_flag = False
+		high_flag = True
+		sms_message = True
+		gpio_alarm = False
+		alert_type = "HIGH"
+		last = severity_flag
+	elif (last != "EXTREME" and last != "HIGH") and (severity_flag != "EXTREME" and severity_flag != "HIGH"):
+		extreme_flag = False
+		high_flag = False
 		sms_message = False
 		gpio_alarm = False
+		last = severity_flag
+	elif (last == "EXTREME") and (severity_flag == "EXTREME"):
+		extreme_flag = True
+		high_flag = False
+		sms_message = False
+		gpio_alarm = False
+		last = severity_flag
+	elif (last == "EXTREME") and (severity_flag == "HIGH"):
 		extreme_flag = False
-		print "yeee"
+		high_flag = True
+		sms_message = True
+		gpio_alarm = False
+		alert_type = "HIGH"
+		last = severity_flag
+	elif (last == "EXTREME") and (severity_flag != "EXTREME" and severity_flag != "HIGH"):
+		extreme_flag = False
+		high_flag = False
+		sms_message = False
+		gpio_alarm = False
+		last = severity_flag
+	elif (last == "HIGH") and (severity_flag == "EXTREME"):
+		extreme_flag = True
+		high_flag = False
+		sms_message = True
+		gpio_alarm = True
+		alert_type = "EXTREME"
+		last = severity_flag
+	elif (last == "HIGH") and (severity_flag == "HIGH"):
+		extreme_flag = False
+		high_flag = True
+		sms_message = False
+		gpio_alarm = False
+		last = severity_flag
+	elif (last == "HIGH") and (severity_flag != "EXTREME" and severity_flag != "HIGH"):
+		extreme_flag = False
+		high_flag = False
+		sms_message = False
+		gpio_alarm = False
+		last = severity_flag
+
+	print "Extreme: " + extreme_flag
+	print "High: " + high_flag
+	beep_three(gpio_alarm)
+	send_sms(alert_type, sms_message)
 
 	s.enter(60, 1, severity_checker, (sc,sms_message,gpio_alarm,sns,extreme_flag))
 
