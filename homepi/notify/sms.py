@@ -83,15 +83,9 @@ def severity_checker(s, extreme_flag, high_flag, sms_message, gpio_alarm, last, 
 #Do this shit every minute
 
 	f = open(severity_file, "r")
-	severity_info = f.readlines()
+	severity_flag = f.readline()
 	f.close()
-
-	severity_info = severity_info[0]
-	pattern = re.compile("^\s+|\s*,\s*|\s+$")
-	severity_array = [x for x in pattern.split(severity_info) if x]
-	severity_number = float(severity_array[0])
-	severity_flag = severity_array[1] 
-
+	
 	#Open the phone number/message file
 	g = open(settings_file,"r")
 	phone_configuration = g.readlines()
