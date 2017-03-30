@@ -164,8 +164,8 @@ def severity_checker(s, extreme_flag, high_flag, sms_message, gpio_alarm, last, 
 		gpio_alarm = False
 		last = severity_flag
 
-	print "Extreme: " + extreme_flag
-	print "High: " + high_flag
+	print "Extreme: " + str(extreme_flag)
+	print "High: " + str(high_flag)
 	beep_three(gpio_alarm)
 	send_sms(sns, phone_number, alert_type, sms_message)
 
